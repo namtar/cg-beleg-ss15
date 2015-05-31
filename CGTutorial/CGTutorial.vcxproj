@@ -58,7 +58,7 @@
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Debug\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CGTutorial</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.exe</TargetExt>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateManifest>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Users\tj\Documents\OpenGL-tutorial_Binaries\Release\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CGTutorial.dir\Release\</IntDir>
@@ -317,14 +317,19 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CGTutorial.cpp" />
+    <ClCompile Include="Labyrinth.cpp" />
     <ClCompile Include="objects.cpp" />
+    <ClCompile Include="Objekt.cpp" />
     <ClCompile Include="objloader.cpp" />
+    <ClCompile Include="Physics.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="objects.hpp" />
+    <ClInclude Include="Objekt.hpp" />
     <ClInclude Include="objloader.hpp" />
+    <ClInclude Include="Physics.hpp" />
     <ClInclude Include="shader.hpp" />
     <ClInclude Include="texture.hpp" />
   </ItemGroup>
