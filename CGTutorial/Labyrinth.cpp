@@ -37,7 +37,8 @@ float initialFoV = 45.0f;
 float speed = 3.0f; // 3 units / second
 float mouseSpeed = 0.005f;
 
-glm::vec3 direction = glm::vec3(0,0,5);
+glm::vec3 direction;
+glm::vec3 rightVector;
 
 // movement stuff
 
@@ -231,9 +232,9 @@ void run(GLFWwindow* window)
 		glm::vec3 tmpDir(cos(verticalAngle) * sin(horizontalAngle), sin(verticalAngle), cos(verticalAngle) * cos(horizontalAngle));
 		direction = tmpDir;
 		// Right vector
-		glm::vec3 right = glm::vec3(sin(horizontalAngle - 3.14f/2.0f), 0, cos(horizontalAngle - 3.14f/2.0f));
+		rightVector = glm::vec3(sin(horizontalAngle - 3.14f/2.0f), 0, cos(horizontalAngle - 3.14f/2.0f));
 		// Up vector : perpendicular to both direction and right
-		glm::vec3 up = glm::cross( right, direction );		
+		glm::vec3 up = glm::cross( rightVector, direction );		
 
 		// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
 		ProjectionMatrix = glm::perspective(40.0f, 4.0f / 3.0f, 0.1f, 1000.0f);
@@ -713,19 +714,21 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		break;
 
 	case GLFW_KEY_A:
+		position -= rightVector * deltaTime * speed;
 		// TODO: change to strave left
 		/*xrot = 90;
 		rotateViewY(xrot / 180 * 3.141592654f);*/
 		break;
 
 	case GLFW_KEY_D:
+		position += rightVector * deltaTime * speed;
 		// TODO: change to strave right
 		/*xrot = 90;
 		rotateViewY(-xrot / 180 * 3.141592654f);*/
 		break;
 
 	case GLFW_KEY_S:
-
+		position -= direction * deltaTime * speed;
 		// TODO: move backwards
 		/*if (backward)
 		{

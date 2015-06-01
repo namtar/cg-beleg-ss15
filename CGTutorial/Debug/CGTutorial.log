@@ -1,4 +1,4 @@
-﻿Der Buildvorgang wurde am 01.06.2015 16:25:02 gestartet.
+﻿Der Buildvorgang wurde am 01.06.2015 16:33:18 gestartet.
      1>Projekt "Z:\Dokumente\Computergrafik\cg-beleg-ss15\CGTutorial\CGTutorial.vcxproj" auf Knoten "2", build Ziel(e).
      1>C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.Targets(1422,5): warning : The referenced project 'C:/Users/tj/Documents/OpenGL-tutorial_Binaries/external/GLEW_190.vcxproj' does not exist.
      1>C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.Targets(1422,5): warning : The referenced project 'C:/Users/tj/Documents/OpenGL-tutorial_Binaries/external/GLFW_276.vcxproj' does not exist.
@@ -29,4 +29,4 @@
 
 Das Erstellen war erfolgreich.
 
-Verstrichene Zeit 00:00:10.31
+Verstrichene Zeit 00:00:06.60
