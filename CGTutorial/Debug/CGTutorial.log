@@ -1,20 +1,26 @@
-﻿Der Buildvorgang wurde am 31.05.2015 23:37:56 gestartet.
-     1>Projekt "D:\projects\cg-beleg-ss15\CGTutorial\CGTutorial.vcxproj" auf Knoten "2", build Ziel(e).
+﻿Der Buildvorgang wurde am 01.06.2015 15:25:26 gestartet.
+     1>Projekt "Z:\Dokumente\Computergrafik\cg-beleg-ss15\CGTutorial\CGTutorial.vcxproj" auf Knoten "2", build Ziel(e).
      1>C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.Targets(1422,5): warning : The referenced project 'C:/Users/tj/Documents/OpenGL-tutorial_Binaries/external/GLEW_190.vcxproj' does not exist.
      1>C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.Targets(1422,5): warning : The referenced project 'C:/Users/tj/Documents/OpenGL-tutorial_Binaries/external/GLFW_276.vcxproj' does not exist.
      1>C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.Targets(1422,5): warning : The referenced project 'C:/Users/tj/Documents/OpenGL-tutorial_Binaries/ZERO_CHECK.vcxproj' does not exist.
      1>InitializeBuildStatus:
-         "Debug\CGTutorial.unsuccessfulbuild" wird erstellt, da "AlwaysCreate" angegeben wurde.
+         Aktualisieren des Timestamps von "Debug\CGTutorial.unsuccessfulbuild".
        ClCompile:
          Alle Ausgaben sind aktuell.
        Link:
-         Alle Ausgaben sind aktuell.
-         CGTutorial.vcxproj -> D:\projects\cg-beleg-ss15\CGTutorial\Debug\CGTutorial.exe
-       FinalizeBuildStatus:
-         Die Datei "Debug\CGTutorial.unsuccessfulbuild" wird gelöscht.
-         Aktualisieren des Timestamps von "Debug\CGTutorial.lastbuildstate".
-     1>Die Erstellung des Projekts "D:\projects\cg-beleg-ss15\CGTutorial\CGTutorial.vcxproj" ist abgeschlossen, build Ziel(e).
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"Debug\CGTutorial.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib glu32.lib opengl32.lib external\Debug\glfw3.lib external\Debug\GLEW_190.lib /MANIFEST /ManifestFile:"Debug\CGTutorial.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"Debug/OpenGL-tutorial_Binaries/Debug/CGTutorial.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"Debug\CGTutorial.lib" /MACHINE:X86 Debug\CGTutorial.obj
+         Debug\Labyrinth.obj
+         Debug\objects.obj
+         Debug\Objekt.obj
+         Debug\objloader.obj
+         Debug\Physics.obj
+         Debug\shader.obj
+         Debug\texture.obj  /machine:X86 /debug 
+     1>Labyrinth.obj : error LNK2019: Verweis auf nicht aufgelöstes externes Symbol "_glfwSetCursor" in Funktion "_main".
+     1>Labyrinth.obj : error LNK2019: Verweis auf nicht aufgelöstes externes Symbol "_glfwCreateStandardCursor" in Funktion "_main".
+     1>Debug\CGTutorial.exe : fatal error LNK1120: 2 nicht aufgelöste externe Verweise.
+     1>Die Erstellung des Projekts "Z:\Dokumente\Computergrafik\cg-beleg-ss15\CGTutorial\CGTutorial.vcxproj" ist abgeschlossen, build Ziel(e) -- FEHLER.
 
-Das Erstellen war erfolgreich.
+Fehler beim Erstellen
 
-Verstrichene Zeit 00:00:00.38
+Verstrichene Zeit 00:00:04.53

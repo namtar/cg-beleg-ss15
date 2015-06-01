@@ -14,8 +14,13 @@
 #include "Objekt.hpp"
 #include "Physics.hpp"
 
-
 using namespace glm;
+
+const int screenWidth = 1024;
+const int screenHeight = 768;
+double mouseXPos = (double) screenWidth / 2;
+double mouseYPos = (double) screenHeight / 2;
+
 
 bool foreward = true;
 bool backward = false;
@@ -47,6 +52,9 @@ glm::vec3 vView(14.5f, 0.0f, 11.0f);
 void run(GLFWwindow* window);
 void error_callback(int error, const char* description);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
+void mouseCursorPosCallback(GLFWwindow* window, double xpos, double ypos);
+
 //Steuerung
 void rotateViewY(float fAngle);
 void move(float fBy);
@@ -62,7 +70,7 @@ int main(void)
 	}
 
 	glfwSetErrorCallback(error_callback);
-	GLFWwindow* window = glfwCreateWindow(1024, 768, "Das Labyrinth", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(screenWidth, screenHeight, "3d Cave", NULL, NULL);
 
 	if (!window)
 	{
@@ -80,8 +88,12 @@ int main(void)
 		return -1;
 	}
 
-	//Tastatur Events
+	// callbacks for keyboard and mouse
 	glfwSetKeyCallback(window, key_callback);
+	glfwSetMouseButtonCallback(window, mouseButtonCallback);
+	glfwSetCursorPosCallback(window, mouseCursorPosCallback);
+	GLFWcursor* cursor = glfwCreateStandardCursor(GLFW_HRESIZE_CURSOR);	
+	glfwSetCursor(window, cursor);
 
 	run(window);
 	return 0;
@@ -605,6 +617,7 @@ void run(GLFWwindow* window)
 
 	boden.~Objekt();
 	decke.~Objekt();
+	
 
 	glDeleteProgram(programID);
 }
@@ -705,6 +718,23 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	default:
 		break;
 	}
+}
+
+void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) 
+{	
+	if(button == GLFW_MOUSE_BUTTON_LEFT) {
+		cout << "Button: " << button << ", Action: " << action << ", Mods: " << mods << endl;
+		cout << "Left Button" << endl;
+	}
+}
+
+void mouseCursorPosCallback(GLFWwindow* window, double xpos, double ypos) 
+{
+	// cout << "MousePos: (x, y)  " << xpos << ", " << ypos << endl;
+	mouseXPos = xpos;
+	mouseYPos = ypos;
+
+	glfwSetCursorPos(window, screenWidth / 2, screenHeight / 2);
 }
 
 void setupLight()
