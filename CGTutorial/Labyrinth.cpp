@@ -21,33 +21,52 @@ const int screenHeight = 768;
 double mouseXPos = (double) screenWidth / 2;
 double mouseYPos = (double) screenHeight / 2;
 
+float deltaTime = 1.0f;
 
-bool foreward = true;
-bool backward = false;
-bool moveable = false;
+glm::mat4 ViewMatrix;
+glm::mat4 ProjectionMatrix;
+// position and view direction stuff
+glm::vec3 position = glm::vec3( 0, 0, 5 );
+// horizontal angle : toward -Z
+float horizontalAngle = 3.14f;
+// vertical angle : 0, look at the horizon
+float verticalAngle = 0.0f;
+// Initial Field of View
+float initialFoV = 45.0f;
+ 
+float speed = 3.0f; // 3 units / second
+float mouseSpeed = 0.005f;
 
-bool doorOne = false;
-bool doorTwo = false;
-bool doorOpenOne = false;
-bool doorOpenTwo = false;
+glm::vec3 direction = glm::vec3(0,0,5);
 
-int figuren = 0;
+// movement stuff
 
-float yfigur1 = -0.5;
-float yfigur2 = -0.5;
-float yfigur3 = -0.5;
-float yfigur4 = -0.5;
+//bool foreward = true;
+//bool backward = false;
+//bool moveable = false;
+//
+//bool doorOne = false;
+//bool doorTwo = false;
+//bool doorOpenOne = false;
+//bool doorOpenTwo = false;
+//
+//int figuren = 0;
 
-int tuerZ1 = -22;
-int tuerZ2 = -3;
+//float yfigur1 = -0.5;
+//float yfigur2 = -0.5;
+//float yfigur3 = -0.5;
+//float yfigur4 = -0.5;
+//
+//int tuerZ1 = -22;
+//int tuerZ2 = -3;
 
-float zpos = 0, xrot = 0, ydrehen = 0;
-mat4 lightTrf(1.0);
-mat4 View;
+//float zpos = 0, xrot = 0, ydrehen = 0;
+//mat4 lightTrf(1.0);
+//mat4 View;
 //Position Kamera
-glm::vec3 vUp(0.0f, 1.0f, 0.0f);
-glm::vec3 vEye(15.0f, 0.0f, 11.0f);
-glm::vec3 vView(14.5f, 0.0f, 11.0f);
+//glm::vec3 vUp(0.0f, 1.0f, 0.0f);
+//glm::vec3 vEye(15.0f, 0.0f, 11.0f);
+//glm::vec3 vView(14.5f, 0.0f, 11.0f);
 
 void run(GLFWwindow* window);
 void error_callback(int error, const char* description);
@@ -59,6 +78,13 @@ void mouseCursorPosCallback(GLFWwindow* window, double xpos, double ypos);
 void rotateViewY(float fAngle);
 void move(float fBy);
 void setupLight();
+
+void computeOrientation() 
+{
+// Compute new orientation
+	horizontalAngle += mouseSpeed * deltaTime * float(screenWidth/2 - mouseXPos );
+	verticalAngle   += mouseSpeed * deltaTime * float( screenHeight/2 - mouseYPos );	
+}
 
 
 int main(void)
@@ -92,7 +118,7 @@ int main(void)
 	glfwSetKeyCallback(window, key_callback);
 	glfwSetMouseButtonCallback(window, mouseButtonCallback);
 	glfwSetCursorPosCallback(window, mouseCursorPosCallback);
-	GLFWcursor* cursor = glfwCreateStandardCursor(GLFW_HRESIZE_CURSOR);	
+	GLFWcursor* cursor = glfwCreateStandardCursor(GLFW_CROSSHAIR_CURSOR);	
 	glfwSetCursor(window, cursor);
 
 	run(window);
@@ -112,19 +138,19 @@ void run(GLFWwindow* window)
 	//Shader benutzen
 	glUseProgram(programID);
 
-	setupLight();
+	// setupLight();
 
 	//anlegen der Objekte
-	Objekt figur = Objekt("spongebob_bind.obj", "mauer.bmp", programID);
+	/*Objekt figur = Objekt("spongebob_bind.obj", "mauer.bmp", programID);
 
 	Objekt figur1 = Objekt("spongebob_bind.obj", "mauer.bmp", programID);
 	Objekt figur2 = Objekt("spongebob_bind.obj", "mauer.bmp", programID);
 	Objekt figur3 = Objekt("teapot.obj", "mauer.bmp", programID);
-	Objekt figur4 = Objekt("teapot.obj", "mauer.bmp", programID);
+	Objekt figur4 = Objekt("teapot.obj", "mauer.bmp", programID);*/
 
-	Objekt boden = Objekt("mauer.bmp", programID);
+	// Objekt boden = Objekt("mauer.bmp", programID);
 
-	Objekt decke = Objekt("mauer.bmp", programID);
+	/*Objekt decke = Objekt("mauer.bmp", programID);
 
 	Objekt wand1 = Objekt("mauer.bmp", programID);
 	Objekt wand2 = Objekt("mauer.bmp", programID);
@@ -181,22 +207,46 @@ void run(GLFWwindow* window)
 	Objekt wand51 = Objekt("mauer.bmp", programID);
 	Objekt wand52 = Objekt("mauer.bmp", programID);
 
-	Objekt lampe = Objekt("mauer.bmp", programID);
+	Objekt lampe = Objekt("mauer.bmp", programID);*/
 
 	Physics p = Physics();
 
-	cout << "Finde die fuenf Figuren im Labyrinth\n";
+	/*cout << "Finde die fuenf Figuren im Labyrinth\n";
 	cout << "Drei sind in dem Labyrinth versteckt, fuer die Fuenfte musst du ";
 	cout << "erst die vier anderen finden damit du die Wand verschieben kannst.\n\n";
 	cout << "Bewegen kannst du dich mit\n w fuer foreward\n a links drehen\n d rechts drehen.\n";
-	cout << "Um die Waende zu verschieben musst so nahm wie \nmoeglich an die Wand ran laufen und e druecken.\n\n";
+	cout << "Um die Waende zu verschieben musst so nahm wie \nmoeglich an die Wand ran laufen und e druecken.\n\n";*/
 
 	while (!glfwWindowShouldClose(window))
-	{
-		std::vector<vector<float>> kollisionsListe;
-		std::vector<vector<float>> kollisionsListeBeweglicherObjekte;
+	{		
+		 // Clear the screen
+         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);         
 
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		computeOrientation();
+		glm::mat4 ModelMatrix = glm::mat4(1.0);
+		glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+
+		// Direction : Spherical coordinates to Cartesian coordinates conversion
+		// direction = (cos(verticalAngle) * sin(horizontalAngle), sin(verticalAngle), cos(verticalAngle) * cos(horizontalAngle));
+		glm::vec3 tmpDir(cos(verticalAngle) * sin(horizontalAngle), sin(verticalAngle), cos(verticalAngle) * cos(horizontalAngle));
+		direction = tmpDir;
+		// Right vector
+		glm::vec3 right = glm::vec3(sin(horizontalAngle - 3.14f/2.0f), 0, cos(horizontalAngle - 3.14f/2.0f));
+		// Up vector : perpendicular to both direction and right
+		glm::vec3 up = glm::cross( right, direction );		
+
+		// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
+		ProjectionMatrix = glm::perspective(40.0f, 4.0f / 3.0f, 0.1f, 1000.0f);
+		// Camera matrix
+		ViewMatrix = glm::lookAt(
+			position,           // Camera is here
+			position+direction, // and looks here : at the same position, plus "direction"
+			up                  // Head is up (set to 0,-1,0 to look upside-down)
+		);
+
+		/*std::vector<vector<float>> kollisionsListe;
+		std::vector<vector<float>> kollisionsListeBeweglicherObjekte;*/
+		
 
 		GLfloat ambientColor[] = {0.2f, 0.2f, 0.2f, 1.0f}; //Color(0.2, 0.2, 0.2)
 		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
@@ -208,13 +258,13 @@ void run(GLFWwindow* window)
 		glEnable(GL_COLOR_MATERIAL) ;
 		glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE) ;
 
-		mat4 Projection = glm::perspective(40.0f, 4.0f / 3.0f, 0.1f, 1000.0f);
+		// mat4 Projection = glm::perspective(40.0f, 4.0f / 3.0f, 0.1f, 1000.0f);
 
-		View = glm::lookAt(glm::vec3(vEye), glm::vec3(vView), glm::vec3(vUp));
+		// View = glm::lookAt(glm::vec3(vEye), glm::vec3(vView), glm::vec3(vUp));
 
-		lampe.lampeBewegen(vView.x, vView.y, vView.z, ydrehen, lightTrf);
+		/*lampe.lampeBewegen(vView.x, vView.y, vView.z, ydrehen, lightTrf);*/
 
-		figur.translate_skalieren(-15, 0, -24, 1, 1, 1);
+		/*figur.translate_skalieren(-15, 0, -24, 1, 1, 1);
 		figur.objekt_drehen(0, 90, 0);
 		figur.anlegen(Projection, View);
 
@@ -232,26 +282,26 @@ void run(GLFWwindow* window)
 
 		figur4.translate_skalieren(27, yfigur4, -24);
 		figur4.objekt_drehen(-90, 0, 0);
-		figur4.anlegen(Projection, View);
+		figur4.anlegen(Projection, View);*/
 
-		boden.translate_skalieren(10, -1, -10, 40, 0.01, 35);
-		boden.quadrat_anlegen(Projection, View);
+		/*boden.translate_skalieren(10, -1, -10, 40, 0.01, 35);
+		boden.quadrat_anlegen(Projection, View);*/
 
-		decke.translate_skalieren(10, 3, -10, 40, 0.01, 35);
-		decke.quadrat_anlegen(Projection, View);
+		/*decke.translate_skalieren(10, 3, -10, 40, 0.01, 35);
+		decke.quadrat_anlegen(Projection, View);*/
 
 		//untere Wand
-		wand1.translate_skalieren(0, 0, 20, 10, 3, 3);
-		wand1.quadrat_anlegen(Projection, View);
+		/*wand1.translate_skalieren(0, 0, 20, 10, 3, 3);
+		wand1.quadrat_anlegen(Projection, View);*/
 
-		wand2.translate_skalieren(20, 0, 20, 10, 3, 3);
+		/*wand2.translate_skalieren(20, 0, 20, 10, 3, 3);
 		wand2.quadrat_anlegen(Projection, View);
 
 		wand3.translate_skalieren(-20, 0, 20, 10, 3, 3);
-		wand3.quadrat_anlegen(Projection, View);
+		wand3.quadrat_anlegen(Projection, View);*/
 
 		//linke wand
-		wand4.translate_skalieren(-30, 0, 10, 3, 3, 10);
+		/*wand4.translate_skalieren(-30, 0, 10, 3, 3, 10);
 		wand4.quadrat_anlegen(Projection, View);
 
 		wand5.translate_skalieren(-30, 0, -10, 3, 3, 10);
@@ -273,10 +323,10 @@ void run(GLFWwindow* window)
 		wand10.quadrat_anlegen(Projection, View);
 
 		wand11.translate_skalieren(40, 0, -30, 10, 3, 3);
-		wand11.quadrat_anlegen(Projection, View);
+		wand11.quadrat_anlegen(Projection, View);*/
 
 		//rechts wand
-		wand14.translate_skalieren(42, 0, 10, 3, 3, 10);
+	/*	wand14.translate_skalieren(42, 0, 10, 3, 3, 10);
 		wand14.quadrat_anlegen(Projection, View);
 
 		wand15.translate_skalieren(47, 0, -10, 3, 3, 10);
@@ -286,124 +336,124 @@ void run(GLFWwindow* window)
 		wand16.quadrat_anlegen(Projection, View);
 
 		wand18.translate_skalieren(40, 0, 20, 10, 3, 3);
-		wand18.quadrat_anlegen(Projection, View);
+		wand18.quadrat_anlegen(Projection, View);*/
 
 		// innenraum
 		//U_Form
-		wand21.translate_skalieren(-12, 0, 10, 10, 3, 1);
-		wand21.quadrat_anlegen(Projection, View);
+		//wand21.translate_skalieren(-12, 0, 10, 10, 3, 1);
+		//wand21.quadrat_anlegen(Projection, View);
 
-		wand22.translate_skalieren(-12, 0, 14, 10, 3, 1);
-		wand22.quadrat_anlegen(Projection, View);
+		//wand22.translate_skalieren(-12, 0, 14, 10, 3, 1);
+		//wand22.quadrat_anlegen(Projection, View);
 
-		wand23.translate_skalieren(-3, 0, 12, 1, 3, 1);
-		wand23.quadrat_anlegen(Projection, View);
-		//-Form
-		wand24.translate_skalieren(-12, 0, 6, 10, 3, 1);
-		wand24.quadrat_anlegen(Projection, View);
+		//wand23.translate_skalieren(-3, 0, 12, 1, 3, 1);
+		//wand23.quadrat_anlegen(Projection, View);
+		////-Form
+		//wand24.translate_skalieren(-12, 0, 6, 10, 3, 1);
+		//wand24.quadrat_anlegen(Projection, View);
 
 		//////////////////////////////////////////////////////////////////////////////////////////ROT1
 		//i
-		wand28.translate_skalieren(-23, 0, -5, 1, 3, 6);
-		wand28.quadrat_anlegen(Projection, View);
-		//-
-		wand27.translate_skalieren(-12, 0, 2, 12, 3, 1);
-		wand27.quadrat_anlegen(Projection, View);
-		//i
-		wand26.translate_skalieren(1, 0, 7, 1, 3, 6);
-		wand26.quadrat_anlegen(Projection, View);
-		//-
-		wand25.translate_skalieren(10, 0, 14, 10, 3, 1);
-		wand25.quadrat_anlegen(Projection, View);
-		//i
-		wand29.translate_skalieren(19, 0, 10, 1, 3, 3);
-		wand29.quadrat_anlegen(Projection, View);
-		//-
-		wand30.translate_skalieren(13, 0, 8, 5, 3, 1);
-		wand30.quadrat_anlegen(Projection, View);
-		//i
-		wand31.translate_skalieren(7, 0, 3, 1, 3, 6);
-		wand31.quadrat_anlegen(Projection, View);
-		//-
-		wand32.translate_skalieren(18, 0, -4, 12, 3, 1);
-		wand32.quadrat_anlegen(Projection, View);
+		//wand28.translate_skalieren(-23, 0, -5, 1, 3, 6);
+		//wand28.quadrat_anlegen(Projection, View);
+		////-
+		//wand27.translate_skalieren(-12, 0, 2, 12, 3, 1);
+		//wand27.quadrat_anlegen(Projection, View);
+		////i
+		//wand26.translate_skalieren(1, 0, 7, 1, 3, 6);
+		//wand26.quadrat_anlegen(Projection, View);
+		////-
+		//wand25.translate_skalieren(10, 0, 14, 10, 3, 1);
+		//wand25.quadrat_anlegen(Projection, View);
+		////i
+		//wand29.translate_skalieren(19, 0, 10, 1, 3, 3);
+		//wand29.quadrat_anlegen(Projection, View);
+		////-
+		//wand30.translate_skalieren(13, 0, 8, 5, 3, 1);
+		//wand30.quadrat_anlegen(Projection, View);
+		////i
+		//wand31.translate_skalieren(7, 0, 3, 1, 3, 6);
+		//wand31.quadrat_anlegen(Projection, View);
+		////-
+		//wand32.translate_skalieren(18, 0, -4, 12, 3, 1);
+		//wand32.quadrat_anlegen(Projection, View);
 
 		//////////////////////////////////////////////////////////////////////////////////////////////gelb2
 		//i
-		wand33.translate_skalieren(23, 0, 10, 1, 3, 3);
-		wand33.quadrat_anlegen(Projection, View);
-		//-
-		wand34.translate_skalieren(27, 0, 14, 5, 3, 1);
-		wand34.quadrat_anlegen(Projection, View);
-		//i
-		wand17.translate_skalieren(31, 0, 8, 1, 3, 6);
-		wand17.quadrat_anlegen(Projection, View);
-		//o
-		wand35.translate_skalieren(22, 0, 1, 6, 3, 2);
-		wand35.quadrat_anlegen(Projection, View);
+		//wand33.translate_skalieren(23, 0, 10, 1, 3, 3);
+		//wand33.quadrat_anlegen(Projection, View);
+		////-
+		//wand34.translate_skalieren(27, 0, 14, 5, 3, 1);
+		//wand34.quadrat_anlegen(Projection, View);
+		////i
+		//wand17.translate_skalieren(31, 0, 8, 1, 3, 6);
+		//wand17.quadrat_anlegen(Projection, View);
+		////o
+		//wand35.translate_skalieren(22, 0, 1, 6, 3, 2);
+		//wand35.quadrat_anlegen(Projection, View);
 
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////orange3
 		//i
-		wand37.translate_skalieren(36, 0, -4, 1, 3, 3);
-		wand37.quadrat_anlegen(Projection, View);
-		//-
-		wand36.translate_skalieren(22, 0, -8, 20, 3, 1);
-		wand36.quadrat_anlegen(Projection, View);
-		//i
-		wand38.translate_skalieren(1, 0, -6, 1, 3, 3);
-		wand38.quadrat_anlegen(Projection, View);
-		//-
-		wand39.translate_skalieren(-9, 0, -4, 9, 3, 1);
-		wand39.quadrat_anlegen(Projection, View);
-		//i
-		wand40.translate_skalieren(-19, 0, -6, 1, 3, 3);
-		wand40.quadrat_anlegen(Projection, View);
-		//-
-		wand41.translate_skalieren(-13, 0, -8, 5, 3, 1);
-		wand41.quadrat_anlegen(Projection, View);
-		//i
-		wand42.translate_skalieren(-9, 0, -12, 1, 3, 3);
-		wand42.quadrat_anlegen(Projection, View);
-		//-
-		wand43.translate_skalieren(-15, 0, -16, 7, 3, 1);
-		wand43.quadrat_anlegen(Projection, View);
-		//i
-		wand44.translate_skalieren(-23, 0, -21, 1, 3, 6);
-		wand44.quadrat_anlegen(Projection, View);
-		//-
-		wand45.translate_skalieren(-17, 0, -28, 7, 3, 1);
-		wand45.quadrat_anlegen(Projection, View);
+		//wand37.translate_skalieren(36, 0, -4, 1, 3, 3);
+		//wand37.quadrat_anlegen(Projection, View);
+		////-
+		//wand36.translate_skalieren(22, 0, -8, 20, 3, 1);
+		//wand36.quadrat_anlegen(Projection, View);
+		////i
+		//wand38.translate_skalieren(1, 0, -6, 1, 3, 3);
+		//wand38.quadrat_anlegen(Projection, View);
+		////-
+		//wand39.translate_skalieren(-9, 0, -4, 9, 3, 1);
+		//wand39.quadrat_anlegen(Projection, View);
+		////i
+		//wand40.translate_skalieren(-19, 0, -6, 1, 3, 3);
+		//wand40.quadrat_anlegen(Projection, View);
+		////-
+		//wand41.translate_skalieren(-13, 0, -8, 5, 3, 1);
+		//wand41.quadrat_anlegen(Projection, View);
+		////i
+		//wand42.translate_skalieren(-9, 0, -12, 1, 3, 3);
+		//wand42.quadrat_anlegen(Projection, View);
+		////-
+		//wand43.translate_skalieren(-15, 0, -16, 7, 3, 1);
+		//wand43.quadrat_anlegen(Projection, View);
+		////i
+		//wand44.translate_skalieren(-23, 0, -21, 1, 3, 6);
+		//wand44.quadrat_anlegen(Projection, View);
+		////-
+		//wand45.translate_skalieren(-17, 0, -28, 7, 3, 1);
+		//wand45.quadrat_anlegen(Projection, View);
 
 
 		/////////////////////////////////////////////////////////////////////
 		//i
-		wand46.translate_skalieren(8, 0, -23, 1, 3, 4);
-		wand46.quadrat_anlegen(Projection, View);
-		//o
-		wand47.translate_skalieren(35, 0, 7, 1, 3, 4);
-		wand47.quadrat_anlegen(Projection, View);
-		//-
-		wand48.translate_skalieren(2, 0, -28, 7, 3, 1);
-		wand48.quadrat_anlegen(Projection, View);
+		//wand46.translate_skalieren(8, 0, -23, 1, 3, 4);
+		//wand46.quadrat_anlegen(Projection, View);
+		////o
+		//wand47.translate_skalieren(35, 0, 7, 1, 3, 4);
+		//wand47.quadrat_anlegen(Projection, View);
+		////-
+		//wand48.translate_skalieren(2, 0, -28, 7, 3, 1);
+		//wand48.quadrat_anlegen(Projection, View);
 
-		//-
-		wand49.translate_skalieren(22, 0, -18, 19, 3, 1);
-		wand49.quadrat_anlegen(Projection, View);
-		//o
-		wand50.translate_skalieren(22, 0, -24, 3, 3, 3);
-		wand50.quadrat_anlegen(Projection, View);
+		////-
+		//wand49.translate_skalieren(22, 0, -18, 19, 3, 1);
+		//wand49.quadrat_anlegen(Projection, View);
+		////o
+		//wand50.translate_skalieren(22, 0, -24, 3, 3, 3);
+		//wand50.quadrat_anlegen(Projection, View);
 
-		//bewegliche Objekte
-		//i
-		wand51.translate_skalieren(-9, 0, tuerZ1, 1, 3, 5);
-		wand51.quadrat_anlegen(Projection, View);
-		//i
-		wand52.translate_skalieren(31, 0, tuerZ2, 1, 3, 5);
-		wand52.quadrat_anlegen(Projection, View);
+		////bewegliche Objekte
+		////i
+		//wand51.translate_skalieren(-9, 0, tuerZ1, 1, 3, 5);
+		//wand51.quadrat_anlegen(Projection, View);
+		////i
+		//wand52.translate_skalieren(31, 0, tuerZ2, 1, 3, 5);
+		//wand52.quadrat_anlegen(Projection, View);
 
 		//Liste von Objekte mit den eine Kollision überprüft werden soll
-		kollisionsListe.push_back(wand1.pos());
+		/*kollisionsListe.push_back(wand1.pos());
 		kollisionsListe.push_back(wand2.pos());
 		kollisionsListe.push_back(wand3.pos());
 		kollisionsListe.push_back(wand4.pos());
@@ -416,9 +466,9 @@ void run(GLFWwindow* window)
 		kollisionsListe.push_back(wand11.pos());
 		kollisionsListe.push_back(wand14.pos());
 		kollisionsListe.push_back(wand15.pos());
-		kollisionsListe.push_back(wand16.pos());
+		kollisionsListe.push_back(wand16.pos());*/
 
-		kollisionsListe.push_back(wand18.pos());
+		/*kollisionsListe.push_back(wand18.pos());
 		kollisionsListe.push_back(wand19.pos());
 		kollisionsListe.push_back(wand20.pos());
 		kollisionsListe.push_back(wand21.pos());
@@ -430,9 +480,9 @@ void run(GLFWwindow* window)
 		kollisionsListe.push_back(wand27.pos());
 		kollisionsListe.push_back(wand28.pos());
 		kollisionsListe.push_back(wand29.pos());
-		kollisionsListe.push_back(wand30.pos());
+		kollisionsListe.push_back(wand30.pos());*/
 
-		kollisionsListe.push_back(wand31.pos());
+	/*	kollisionsListe.push_back(wand31.pos());
 		kollisionsListe.push_back(wand32.pos());
 		kollisionsListe.push_back(wand33.pos());
 		kollisionsListe.push_back(wand34.pos());
@@ -454,21 +504,21 @@ void run(GLFWwindow* window)
 		kollisionsListe.push_back(wand49.pos());
 		kollisionsListe.push_back(wand50.pos());
 		kollisionsListe.push_back(wand51.pos());
-		kollisionsListe.push_back(wand52.pos());
+		kollisionsListe.push_back(wand52.pos());*/
 
-		kollisionsListe.push_back(figur1.pos());
+		/*kollisionsListe.push_back(figur1.pos());
 		kollisionsListe.push_back(figur2.pos());
 		kollisionsListe.push_back(figur3.pos());
-		kollisionsListe.push_back(figur4.pos());
+		kollisionsListe.push_back(figur4.pos());*/
 
-		kollisionsListeBeweglicherObjekte.push_back(wand51.pos());
-		kollisionsListeBeweglicherObjekte.push_back(wand52.pos());
-		kollisionsListeBeweglicherObjekte.push_back(figur1.pos());
+		/*kollisionsListeBeweglicherObjekte.push_back(wand51.pos());
+		kollisionsListeBeweglicherObjekte.push_back(wand52.pos());*/
+		/*kollisionsListeBeweglicherObjekte.push_back(figur1.pos());
 		kollisionsListeBeweglicherObjekte.push_back(figur2.pos());
 		kollisionsListeBeweglicherObjekte.push_back(figur3.pos());
-		kollisionsListeBeweglicherObjekte.push_back(figur4.pos());
+		kollisionsListeBeweglicherObjekte.push_back(figur4.pos());*/
 
-		if (p.positionsAbfrage(-15, -24, vView.x, vView.y, vView.z))
+		/*if (p.positionsAbfrage(-15, -24, vView.x, vView.y, vView.z))
 		{
 			break;
 		}
@@ -556,14 +606,14 @@ void run(GLFWwindow* window)
 			doorTwo = false;
 			moveable = false;
 			foreward = true;
-		}
+		}*/
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
 
-	boden.~Objekt();
-	wand1.~Objekt();
+	/*boden.~Objekt();*/
+	/*wand1.~Objekt();
 	wand2.~Objekt();
 	wand3.~Objekt();
 	wand4.~Objekt();
@@ -608,15 +658,15 @@ void run(GLFWwindow* window)
 	wand50.~Objekt();
 
 	wand51.~Objekt();
-	wand52.~Objekt();
+	wand52.~Objekt();*/
 
-	figur1.~Objekt();
+	/*figur1.~Objekt();
 	figur2.~Objekt();
 	figur3.~Objekt();
-	figur4.~Objekt();
+	figur4.~Objekt();*/
 
-	boden.~Objekt();
-	decke.~Objekt();
+	/*boden.~Objekt();*/
+	/*decke.~Objekt();*/
 	
 
 	glDeleteProgram(programID);
@@ -624,19 +674,19 @@ void run(GLFWwindow* window)
 
 void rotateViewY(float fAngle)
 {
-	glm::mat4 mRotation = glm::rotate(glm::mat4(1.0f), fAngle, glm::vec3(0.0f, 1.0f, 0.0f));
+	/*glm::mat4 mRotation = glm::rotate(glm::mat4(1.0f), fAngle, glm::vec3(0.0f, 1.0f, 0.0f));
 	glm::vec3 vDir = vView - vEye;
 	glm::vec4 vNewView = mRotation * glm::vec4(vDir, 1.0f);
 	vView = glm::vec3(vNewView.x, vNewView.y, vNewView.z);
-	vView += vEye;
+	vView += vEye;*/
 }
 
 void move(float fBy)
 {
-	glm::vec3 vDir = vView - vEye;
+	/*glm::vec3 vDir = vView - vEye;
 	vDir *= fBy;
 	vEye += vDir;
-	vView += vDir;
+	vView += vDir;*/
 }
 
 
@@ -654,37 +704,38 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		break;
 
 	case GLFW_KEY_W:
-		if (foreward)
+		/*if (foreward)
 		{
 			zpos = 1;
 			move(zpos);
-		}
+		}*/
+		position += direction * deltaTime * speed;
 		break;
 
 	case GLFW_KEY_A:
 		// TODO: change to strave left
-		xrot = 90;
-		rotateViewY(xrot / 180 * 3.141592654f);
+		/*xrot = 90;
+		rotateViewY(xrot / 180 * 3.141592654f);*/
 		break;
 
 	case GLFW_KEY_D:
 		// TODO: change to strave right
-		xrot = 90;
-		rotateViewY(-xrot / 180 * 3.141592654f);
+		/*xrot = 90;
+		rotateViewY(-xrot / 180 * 3.141592654f);*/
 		break;
 
 	case GLFW_KEY_S:
 
 		// TODO: move backwards
-		if (backward)
+		/*if (backward)
 		{
 			zpos = -1;
 			move(zpos);
-		}
+		}*/
 		break;
 
 	case GLFW_KEY_E:
-		if (moveable)
+	/*	if (moveable)
 		{
 			if (doorOne && figuren == 4)
 			{
@@ -712,7 +763,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 					doorOpenTwo = true;
 				}
 			}
-		}
+		}*/
 		break;
 
 	default:
