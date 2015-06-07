@@ -26,14 +26,14 @@ float deltaTime = 1.0f;
 glm::mat4 ViewMatrix;
 glm::mat4 ProjectionMatrix;
 // position and view direction stuff
-glm::vec3 position = glm::vec3( 0, 0, 5 );
+glm::vec3 position = glm::vec3(0, 0, 5);
 // horizontal angle : toward -Z
 float horizontalAngle = 3.14f;
 // vertical angle : 0, look at the horizon
 float verticalAngle = 0.0f;
 // Initial Field of View
 float initialFoV = 45.0f;
- 
+
 float speed = 3.0f; // 3 units / second
 float mouseSpeed = 0.005f;
 
@@ -80,11 +80,24 @@ void rotateViewY(float fAngle);
 void move(float fBy);
 void setupLight();
 
-void computeOrientation() 
+void computeOrientation()
 {
-// Compute new orientation
-	horizontalAngle += mouseSpeed * deltaTime * float(screenWidth/2 - mouseXPos );
-	verticalAngle   += mouseSpeed * deltaTime * float( screenHeight/2 - mouseYPos );	
+	// Compute new orientation
+	horizontalAngle += mouseSpeed * deltaTime * float(screenWidth / 2 - mouseXPos);
+	verticalAngle += mouseSpeed * deltaTime * float(screenHeight / 2 - mouseYPos);
+}
+
+void sendMVP(GLuint programID, glm::mat4 Model, glm::mat4 View, glm::mat4 Projection)
+{
+	// Our ModelViewProjection : multiplication of our 3 matrices
+	glm::mat4 MVP = Projection * View * Model;
+	// Send our transformation to the currently bound shader, 
+	// in the "MVP" uniform, konstant fuer alle Eckpunkte
+	glUniformMatrix4fv(glGetUniformLocation(programID, "MVP"), 1, GL_FALSE, &MVP[0][0]);
+
+	glUniformMatrix4fv(glGetUniformLocation(programID, "M"), 1, GL_FALSE, &Model[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(programID, "V"), 1, GL_FALSE, &View[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(programID, "P"), 1, GL_FALSE, &Projection[0][0]);
 }
 
 
@@ -119,7 +132,7 @@ int main(void)
 	glfwSetKeyCallback(window, key_callback);
 	glfwSetMouseButtonCallback(window, mouseButtonCallback);
 	glfwSetCursorPosCallback(window, mouseCursorPosCallback);
-	GLFWcursor* cursor = glfwCreateStandardCursor(GLFW_CROSSHAIR_CURSOR);	
+	GLFWcursor* cursor = glfwCreateStandardCursor(GLFW_CROSSHAIR_CURSOR);
 	glfwSetCursor(window, cursor);
 
 	run(window);
@@ -128,7 +141,11 @@ int main(void)
 
 void run(GLFWwindow* window)
 {
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	// Cull triangles which normal is not towards the camera
+	glEnable(GL_CULL_FACE);
+
+	//	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	//Shader laden
@@ -142,19 +159,19 @@ void run(GLFWwindow* window)
 	// setupLight();
 
 	//anlegen der Objekte
-	/*Objekt figur = Objekt("spongebob_bind.obj", "mauer.bmp", programID);
+	Objekt figur = Objekt("spongebob_bind.obj", "mauer.bmp", programID);
 
-	Objekt figur1 = Objekt("spongebob_bind.obj", "mauer.bmp", programID);
-	Objekt figur2 = Objekt("spongebob_bind.obj", "mauer.bmp", programID);
-	Objekt figur3 = Objekt("teapot.obj", "mauer.bmp", programID);
-	Objekt figur4 = Objekt("teapot.obj", "mauer.bmp", programID);*/
+	//	Objekt figur1 = Objekt("spongebob_bind.obj", "mauer.bmp", programID);
+	//	Objekt figur2 = Objekt("spongebob_bind.obj", "mauer.bmp", programID);
+	//	Objekt figur3 = Objekt("teapot.obj", "mauer.bmp", programID);
+	//	Objekt figur4 = Objekt("teapot.obj", "mauer.bmp", programID);*/
 
 	// Objekt boden = Objekt("mauer.bmp", programID);
 
-	/*Objekt decke = Objekt("mauer.bmp", programID);
+	/*Objekt decke = Objekt("mauer.bmp", programID);*/
 
 	Objekt wand1 = Objekt("mauer.bmp", programID);
-	Objekt wand2 = Objekt("mauer.bmp", programID);
+	/*Objekt wand2 = Objekt("mauer.bmp", programID);
 	Objekt wand3 = Objekt("mauer.bmp", programID);
 	Objekt wand4 = Objekt("mauer.bmp", programID);
 	Objekt wand5 = Objekt("mauer.bmp", programID);
@@ -218,46 +235,51 @@ void run(GLFWwindow* window)
 	cout << "Bewegen kannst du dich mit\n w fuer foreward\n a links drehen\n d rechts drehen.\n";
 	cout << "Um die Waende zu verschieben musst so nahm wie \nmoeglich an die Wand ran laufen und e druecken.\n\n";*/
 
+	// Get a handle for our "MVP" uniform
+	GLuint MatrixID = glGetUniformLocation(programID, "MVP");
+
 	while (!glfwWindowShouldClose(window))
-	{		
-		 // Clear the screen
-         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);         
+	{
+		// Clear the screen
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		computeOrientation();
 		glm::mat4 ModelMatrix = glm::mat4(1.0);
-		glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-
 		// Direction : Spherical coordinates to Cartesian coordinates conversion
 		// direction = (cos(verticalAngle) * sin(horizontalAngle), sin(verticalAngle), cos(verticalAngle) * cos(horizontalAngle));
 		glm::vec3 tmpDir(cos(verticalAngle) * sin(horizontalAngle), sin(verticalAngle), cos(verticalAngle) * cos(horizontalAngle));
 		direction = tmpDir;
 		// Right vector
-		rightVector = glm::vec3(sin(horizontalAngle - 3.14f/2.0f), 0, cos(horizontalAngle - 3.14f/2.0f));
+		rightVector = glm::vec3(sin(horizontalAngle - 3.14f / 2.0f), 0, cos(horizontalAngle - 3.14f / 2.0f));
 		// Up vector : perpendicular to both direction and right
-		glm::vec3 up = glm::cross( rightVector, direction );		
+		glm::vec3 up = glm::cross(rightVector, direction);
 
 		// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
 		ProjectionMatrix = glm::perspective(40.0f, 4.0f / 3.0f, 0.1f, 1000.0f);
 		// Camera matrix
 		ViewMatrix = glm::lookAt(
-			position,           // Camera is here
-			position+direction, // and looks here : at the same position, plus "direction"
-			up                  // Head is up (set to 0,-1,0 to look upside-down)
+			position, // Camera is here
+			position + direction, // and looks here : at the same position, plus "direction"
+			up // Head is up (set to 0,-1,0 to look upside-down)
 		);
+		glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+
+		sendMVP(programID, ModelMatrix, ViewMatrix, ProjectionMatrix);
+		
 
 		/*std::vector<vector<float>> kollisionsListe;
 		std::vector<vector<float>> kollisionsListeBeweglicherObjekte;*/
-		
 
-		GLfloat ambientColor[] = {0.2f, 0.2f, 0.2f, 1.0f}; //Color(0.2, 0.2, 0.2)
-		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
 
-		GLfloat lightColor0[] = {1.0f, 1.0f, 1.0f, 1.0f}; //Color (0.5, 0.5, 0.5)
-		GLfloat lightPos0[] = {1.0f, 1.0f, 0.0f, 1.0f}; //Positioned at (4, 0, 8)
-		glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor0);
-		glLightfv(GL_LIGHT0, GL_POSITION, lightPos0);
-		glEnable(GL_COLOR_MATERIAL) ;
-		glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE) ;
+		//		GLfloat ambientColor[] = {0.2f, 0.2f, 0.2f, 1.0f}; //Color(0.2, 0.2, 0.2)
+		//		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
+		//
+		//		GLfloat lightColor0[] = {1.0f, 1.0f, 1.0f, 1.0f}; //Color (0.5, 0.5, 0.5)
+		//		GLfloat lightPos0[] = {1.0f, 1.0f, 0.0f, 1.0f}; //Positioned at (4, 0, 8)
+		//		glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor0);
+		//		glLightfv(GL_LIGHT0, GL_POSITION, lightPos0);
+		//		glEnable(GL_COLOR_MATERIAL) ;
+		//		glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE) ;
 
 		// mat4 Projection = glm::perspective(40.0f, 4.0f / 3.0f, 0.1f, 1000.0f);
 
@@ -265,10 +287,11 @@ void run(GLFWwindow* window)
 
 		/*lampe.lampeBewegen(vView.x, vView.y, vView.z, ydrehen, lightTrf);*/
 
-		/*figur.translate_skalieren(-15, 0, -24, 1, 1, 1);
+		figur.translate_skalieren(-15, 0, -24, 1, 1, 1);
 		figur.objekt_drehen(0, 90, 0);
-		figur.anlegen(Projection, View);
+		figur.anlegen(ProjectionMatrix, ViewMatrix);
 
+		/**
 		figur1.translate_skalieren(-17, yfigur1, -6.3, 1, 1, 1);
 		figur1.objekt_drehen(0, 90, 0);
 		figur1.anlegen(Projection, View);
@@ -292,8 +315,8 @@ void run(GLFWwindow* window)
 		decke.quadrat_anlegen(Projection, View);*/
 
 		//untere Wand
-		/*wand1.translate_skalieren(0, 0, 20, 10, 3, 3);
-		wand1.quadrat_anlegen(Projection, View);*/
+		wand1.translate_skalieren(0, 0, 20, 10, 3, 3);
+		wand1.quadrat_anlegen(ProjectionMatrix, ViewMatrix);
 
 		/*wand2.translate_skalieren(20, 0, 20, 10, 3, 3);
 		wand2.quadrat_anlegen(Projection, View);
@@ -327,7 +350,7 @@ void run(GLFWwindow* window)
 		wand11.quadrat_anlegen(Projection, View);*/
 
 		//rechts wand
-	/*	wand14.translate_skalieren(42, 0, 10, 3, 3, 10);
+		/*	wand14.translate_skalieren(42, 0, 10, 3, 3, 10);
 		wand14.quadrat_anlegen(Projection, View);
 
 		wand15.translate_skalieren(47, 0, -10, 3, 3, 10);
@@ -483,7 +506,7 @@ void run(GLFWwindow* window)
 		kollisionsListe.push_back(wand29.pos());
 		kollisionsListe.push_back(wand30.pos());*/
 
-	/*	kollisionsListe.push_back(wand31.pos());
+		/*	kollisionsListe.push_back(wand31.pos());
 		kollisionsListe.push_back(wand32.pos());
 		kollisionsListe.push_back(wand33.pos());
 		kollisionsListe.push_back(wand34.pos());
@@ -614,8 +637,8 @@ void run(GLFWwindow* window)
 	}
 
 	/*boden.~Objekt();*/
-	/*wand1.~Objekt();
-	wand2.~Objekt();
+	wand1.~Objekt();
+	/*wand2.~Objekt();
 	wand3.~Objekt();
 	wand4.~Objekt();
 	wand5.~Objekt();
@@ -668,8 +691,8 @@ void run(GLFWwindow* window)
 
 	/*boden.~Objekt();*/
 	/*decke.~Objekt();*/
-	
 
+	glfwTerminate();
 	glDeleteProgram(programID);
 }
 
@@ -738,7 +761,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		break;
 
 	case GLFW_KEY_E:
-	/*	if (moveable)
+		/*	if (moveable)
 		{
 			if (doorOne && figuren == 4)
 			{
@@ -772,23 +795,28 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	default:
 		break;
 	}
+
+	cout << "Move" << endl;
 }
 
-void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) 
-{	
-	if(button == GLFW_MOUSE_BUTTON_LEFT) {
+void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
+{
+	if (button == GLFW_MOUSE_BUTTON_LEFT)
+	{
 		cout << "Button: " << button << ", Action: " << action << ", Mods: " << mods << endl;
 		cout << "Left Button" << endl;
 	}
 }
 
-void mouseCursorPosCallback(GLFWwindow* window, double xpos, double ypos) 
+void mouseCursorPosCallback(GLFWwindow* window, double xpos, double ypos)
 {
 	// cout << "MousePos: (x, y)  " << xpos << ", " << ypos << endl;
 	mouseXPos = xpos;
 	mouseYPos = ypos;
 
 	glfwSetCursorPos(window, screenWidth / 2, screenHeight / 2);
+
+	//	cout << position[0] << endl;
 }
 
 void setupLight()

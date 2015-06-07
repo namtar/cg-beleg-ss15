@@ -1,15 +1,15 @@
-﻿Der Buildvorgang wurde am 01.06.2015 16:33:18 gestartet.
-     1>Projekt "Z:\Dokumente\Computergrafik\cg-beleg-ss15\CGTutorial\CGTutorial.vcxproj" auf Knoten "2", build Ziel(e).
+﻿Der Buildvorgang wurde am 01.06.2015 23:49:33 gestartet.
+     1>Projekt "D:\projects\cg-beleg-ss15\CGTutorial\CGTutorial.vcxproj" auf Knoten "2", build Ziel(e).
      1>C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.Targets(1422,5): warning : The referenced project 'C:/Users/tj/Documents/OpenGL-tutorial_Binaries/external/GLEW_190.vcxproj' does not exist.
      1>C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.Targets(1422,5): warning : The referenced project 'C:/Users/tj/Documents/OpenGL-tutorial_Binaries/external/GLFW_276.vcxproj' does not exist.
      1>C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.Targets(1422,5): warning : The referenced project 'C:/Users/tj/Documents/OpenGL-tutorial_Binaries/ZERO_CHECK.vcxproj' does not exist.
      1>InitializeBuildStatus:
-         Aktualisieren des Timestamps von "Debug\CGTutorial.unsuccessfulbuild".
+         "Debug\CGTutorial.unsuccessfulbuild" wird erstellt, da "AlwaysCreate" angegeben wurde.
        ClCompile:
-         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"external\glfw-3.1.1" /I"external\glm-0.9.4.0" /I"external\glew-1.9.0" /Zi /nologo /W3 /WX- /MP /Od /Ob0 /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D TW_STATIC /D TW_NO_LIB_PRAGMA /D TW_NO_DIRECT3D /D GLEW_STATIC /D _CRT_SECURE_NO_WARNINGS /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Labyrinth.cpp
+         D:\Programme\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"external\glfw-3.1.1" /I"external\glm-0.9.4.0" /I"external\glew-1.9.0" /Zi /nologo /W3 /WX- /MP /Od /Ob0 /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D TW_STATIC /D TW_NO_LIB_PRAGMA /D TW_NO_DIRECT3D /D GLEW_STATIC /D _CRT_SECURE_NO_WARNINGS /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Labyrinth.cpp
          Labyrinth.cpp
        Link:
-         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"Debug\CGTutorial.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib glu32.lib opengl32.lib external\Debug\glfw3.lib external\Debug\GLEW_190.lib /MANIFEST /ManifestFile:"Debug\CGTutorial.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"Debug/OpenGL-tutorial_Binaries/Debug/CGTutorial.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"Debug\CGTutorial.lib" /MACHINE:X86 Debug\CGTutorial.obj
+         D:\Programme\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"Debug\CGTutorial.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib glu32.lib opengl32.lib external\Debug\glfw3.lib external\Debug\GLEW_190.lib /MANIFEST /ManifestFile:"Debug\CGTutorial.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"Debug/OpenGL-tutorial_Binaries/Debug/CGTutorial.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"Debug\CGTutorial.lib" /MACHINE:X86 Debug\CGTutorial.obj
          Debug\Labyrinth.obj
          Debug\objects.obj
          Debug\Objekt.obj
@@ -18,15 +18,15 @@
          Debug\shader.obj
          Debug\texture.obj  /machine:X86 /debug 
      1>LINK : warning LNK4098: Standardbibliothek "MSVCRT" steht in Konflikt mit anderen Bibliotheken; /NODEFAULTLIB:Bibliothek verwenden.
-     1>GLEW_190.lib(glew.obj) : warning LNK4099: PDB "vc100.pdb" wurde nicht mit "GLEW_190.lib(glew.obj)" oder an "Z:\Dokumente\Computergrafik\cg-beleg-ss15\CGTutorial\Debug\OpenGL-tutorial_Binaries\Debug\vc100.pdb" gefunden; Objekt wird verknüpft, als ob keine Debuginformationen vorhanden wären.
-         CGTutorial.vcxproj -> Z:\Dokumente\Computergrafik\cg-beleg-ss15\CGTutorial\Debug\CGTutorial.exe
+     1>GLEW_190.lib(glew.obj) : warning LNK4099: PDB "vc100.pdb" wurde nicht mit "GLEW_190.lib(glew.obj)" oder an "D:\projects\cg-beleg-ss15\CGTutorial\Debug\OpenGL-tutorial_Binaries\Debug\vc100.pdb" gefunden; Objekt wird verknüpft, als ob keine Debuginformationen vorhanden wären.
+         CGTutorial.vcxproj -> D:\projects\cg-beleg-ss15\CGTutorial\Debug\CGTutorial.exe
        Manifest:
          C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"Debug\CGTutorial.exe;#1" /manifest Debug\CGTutorial.exe.intermediate.manifest
        FinalizeBuildStatus:
          Die Datei "Debug\CGTutorial.unsuccessfulbuild" wird gelöscht.
          Aktualisieren des Timestamps von "Debug\CGTutorial.lastbuildstate".
-     1>Die Erstellung des Projekts "Z:\Dokumente\Computergrafik\cg-beleg-ss15\CGTutorial\CGTutorial.vcxproj" ist abgeschlossen, build Ziel(e).
+     1>Die Erstellung des Projekts "D:\projects\cg-beleg-ss15\CGTutorial\CGTutorial.vcxproj" ist abgeschlossen, build Ziel(e).
 
 Das Erstellen war erfolgreich.
 
-Verstrichene Zeit 00:00:06.60
+Verstrichene Zeit 00:00:02.91
