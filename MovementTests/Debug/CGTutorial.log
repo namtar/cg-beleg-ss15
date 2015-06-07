@@ -1,0 +1,20 @@
+﻿Der Buildvorgang wurde am 06.06.2015 17:19:50 gestartet.
+     1>Projekt "D:\projects\cg-beleg-ss15\MovementTests\CGTutorial.vcxproj" auf Knoten "2", build Ziel(e).
+     1>C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.Targets(1422,5): warning : The referenced project 'C:/Users/tj/Documents/OpenGL-tutorial_Binaries/external/GLEW_190.vcxproj' does not exist.
+     1>C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.Targets(1422,5): warning : The referenced project 'C:/Users/tj/Documents/OpenGL-tutorial_Binaries/external/GLFW_276.vcxproj' does not exist.
+     1>C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.Targets(1422,5): warning : The referenced project 'C:/Users/tj/Documents/OpenGL-tutorial_Binaries/ZERO_CHECK.vcxproj' does not exist.
+     1>InitializeBuildStatus:
+         "Debug\CGTutorial.unsuccessfulbuild" wird erstellt, da "AlwaysCreate" angegeben wurde.
+       ClCompile:
+         Alle Ausgaben sind aktuell.
+       Link:
+         Alle Ausgaben sind aktuell.
+         CGTutorial.vcxproj -> D:\projects\cg-beleg-ss15\MovementTests\Debug\Solar.exe
+       FinalizeBuildStatus:
+         Die Datei "Debug\CGTutorial.unsuccessfulbuild" wird gelöscht.
+         Aktualisieren des Timestamps von "Debug\CGTutorial.lastbuildstate".
+     1>Die Erstellung des Projekts "D:\projects\cg-beleg-ss15\MovementTests\CGTutorial.vcxproj" ist abgeschlossen, build Ziel(e).
+
+Das Erstellen war erfolgreich.
+
+Verstrichene Zeit 00:00:00.24
