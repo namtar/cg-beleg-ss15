@@ -21,9 +21,15 @@
     <ClCompile Include="..\..\MovementTests\shader.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Wall.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="shader.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Wall.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
