@@ -14,13 +14,14 @@ out vec3 color;
 uniform sampler2D myTextureSampler;
 uniform mat4 MV;
 uniform vec3 LightPosition_worldspace;
+uniform	vec3 LightColor = vec3(1,1,1);
 
 void main(){
 
 	// Light emission properties
 	// You probably want to put them as uniforms
 
-	vec3 LightColor = vec3(1,1,1);
+	// LightColor = vec3(1,1,1);
 	// vec3 LightColor = vec3(1,1,1); Uebung 15
 	// vec3 LightColor = vec3(0.2,0.3,0.4); Uebung 15
 	

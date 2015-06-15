@@ -83,7 +83,7 @@
     <ClInclude Include="objects.hpp" />
     <ClInclude Include="objloader.hpp" />
     <ClInclude Include="shader.hpp" />
-    <ClInclude Include="SpaceObject.h" />
+    <ClInclude Include="SpaceObject.hpp" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Wall.h" />
   </ItemGroup>

@@ -1,39 +1,40 @@
-﻿Der Buildvorgang wurde am 11.06.2015 20:52:46 gestartet.
-     1>Projekt "D:\projects\cg-beleg-ss15\SolarShoot\SolarShoot\SolarShoot.vcxproj" auf Knoten "2", build Ziel(e).
+﻿Der Buildvorgang wurde am 15.06.2015 17:14:38 gestartet.
+     1>Projekt "C:\Users\s0542834\Desktop\cg-beleg-ss15\SolarShoot\SolarShoot\SolarShoot.vcxproj" auf Knoten "2", build Ziel(e).
      1>InitializeBuildStatus:
          "Debug\SolarShoot.unsuccessfulbuild" wird erstellt, da "AlwaysCreate" angegeben wurde.
        ClCompile:
-         D:\Programme\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"externals\glm-0.9.4.0" /I"externals\glew-1.12.0\include" /I"externals\glfw-3.1.1.bin.WIN32\include" /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"externals\glm-0.9.4.0" /I"externals\glew-1.12.0\include" /I"externals\glfw-3.1.1.bin.WIN32\include" /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
          main.cpp
-     1>d:\projects\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(98): warning C4244: 'Initialisierung': Konvertierung von 'double' in 'int', möglicher Datenverlust
-     1>d:\projects\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(99): warning C4244: 'Initialisierung': Konvertierung von 'double' in 'int', möglicher Datenverlust
-     1>d:\projects\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(335): warning C4244: 'Initialisierung': Konvertierung von 'GLfloat' in 'GLint', möglicher Datenverlust
-     1>d:\projects\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(335): warning C4244: '+=': Konvertierung von 'GLfloat' in 'GLint', möglicher Datenverlust
-     1>d:\projects\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(338): warning C4244: 'Argument': Konvertierung von 'GLint' in 'GLfloat', möglicher Datenverlust
-     1>d:\projects\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(339): warning C4244: 'Argument': Konvertierung von 'GLint' in 'GLfloat', möglicher Datenverlust
-     1>d:\projects\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(342): warning C4244: 'Argument': Konvertierung von 'GLint' in 'GLfloat', möglicher Datenverlust
-     1>d:\projects\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(343): warning C4244: 'Argument': Konvertierung von 'GLint' in 'GLfloat', möglicher Datenverlust
-     1>d:\projects\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(376): warning C4244: 'Argument': Konvertierung von 'float' in 'GLuint', möglicher Datenverlust
-     1>d:\projects\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(376): warning C4244: 'Argument': Konvertierung von 'float' in 'GLuint', möglicher Datenverlust
-     1>d:\projects\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(399): warning C4305: 'Argument': Verkürzung von 'double' in 'GLfloat'
-     1>d:\projects\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(399): warning C4305: 'Argument': Verkürzung von 'double' in 'GLfloat'
-     1>d:\projects\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(527): warning C4305: 'Initialisierung': Verkürzung von 'double' in 'float'
+     1>c:\users\s0542834\desktop\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(125): warning C4244: 'Initialisierung': Konvertierung von 'double' in 'int', möglicher Datenverlust
+     1>c:\users\s0542834\desktop\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(126): warning C4244: 'Initialisierung': Konvertierung von 'double' in 'int', möglicher Datenverlust
+     1>c:\users\s0542834\desktop\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(272): warning C4305: 'Argument': Verkürzung von 'double' in 'GLclampf'
+     1>c:\users\s0542834\desktop\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(372): warning C4244: 'Initialisierung': Konvertierung von 'GLfloat' in 'GLint', möglicher Datenverlust
+     1>c:\users\s0542834\desktop\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(372): warning C4244: '+=': Konvertierung von 'GLfloat' in 'GLint', möglicher Datenverlust
+     1>c:\users\s0542834\desktop\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(375): warning C4244: 'Argument': Konvertierung von 'GLint' in 'GLfloat', möglicher Datenverlust
+     1>c:\users\s0542834\desktop\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(376): warning C4244: 'Argument': Konvertierung von 'GLint' in 'GLfloat', möglicher Datenverlust
+     1>c:\users\s0542834\desktop\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(379): warning C4244: 'Argument': Konvertierung von 'GLint' in 'GLfloat', möglicher Datenverlust
+     1>c:\users\s0542834\desktop\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(380): warning C4244: 'Argument': Konvertierung von 'GLint' in 'GLfloat', möglicher Datenverlust
+     1>c:\users\s0542834\desktop\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(425): warning C4244: 'Argument': Konvertierung von 'float' in 'GLuint', möglicher Datenverlust
+     1>c:\users\s0542834\desktop\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(425): warning C4244: 'Argument': Konvertierung von 'float' in 'GLuint', möglicher Datenverlust
+     1>c:\users\s0542834\desktop\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(578): warning C4305: 'Initialisierung': Verkürzung von 'double' in 'float'
        Link:
-         D:\Programme\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\projects\cg-beleg-ss15\SolarShoot\Debug\SolarShoot.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"externals\glfw-3.1.1.bin.WIN32\lib-vc2010" /LIBPATH:"externals\glew-1.12.0\lib\Release\Win32" kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib OpenGL32.lib Glu32.lib glfw3.lib glew32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\SolarShoot.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"D:\projects\cg-beleg-ss15\SolarShoot\Debug\SolarShoot.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\projects\cg-beleg-ss15\SolarShoot\Debug\SolarShoot.lib" /MACHINE:X86 Debug\objects.obj
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\s0542834\Desktop\cg-beleg-ss15\SolarShoot\Debug\SolarShoot.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"externals\glfw-3.1.1.bin.WIN32\lib-vc2010" /LIBPATH:"externals\glew-1.12.0\lib\Release\Win32" kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib OpenGL32.lib Glu32.lib glfw3.lib glew32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\SolarShoot.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\s0542834\Desktop\cg-beleg-ss15\SolarShoot\Debug\SolarShoot.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\s0542834\Desktop\cg-beleg-ss15\SolarShoot\Debug\SolarShoot.lib" /MACHINE:X86 Debug\objects.obj
          Debug\objloader.obj
          Debug\shader.obj
          Debug\main.obj
+         Debug\SpaceObject.obj
+         Debug\Sphere.obj
          Debug\Wall.obj
      1>objects.obj : warning LNK4075: /EDITANDCONTINUE wird aufgrund der Angabe von /INCREMENTAL:NO ignoriert.
      1>LINK : warning LNK4098: Standardbibliothek "MSVCRT" steht in Konflikt mit anderen Bibliotheken; /NODEFAULTLIB:Bibliothek verwenden.
-         SolarShoot.vcxproj -> D:\projects\cg-beleg-ss15\SolarShoot\Debug\SolarShoot.exe
+         SolarShoot.vcxproj -> C:\Users\s0542834\Desktop\cg-beleg-ss15\SolarShoot\Debug\SolarShoot.exe
        Manifest:
-         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"D:\projects\cg-beleg-ss15\SolarShoot\Debug\SolarShoot.exe;#1" /manifest Debug\SolarShoot.exe.intermediate.manifest
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"C:\Users\s0542834\Desktop\cg-beleg-ss15\SolarShoot\Debug\SolarShoot.exe;#1" /manifest Debug\SolarShoot.exe.intermediate.manifest
        FinalizeBuildStatus:
          Die Datei "Debug\SolarShoot.unsuccessfulbuild" wird gelöscht.
          Aktualisieren des Timestamps von "Debug\SolarShoot.lastbuildstate".
-     1>Die Erstellung des Projekts "D:\projects\cg-beleg-ss15\SolarShoot\SolarShoot\SolarShoot.vcxproj" ist abgeschlossen, build Ziel(e).
+     1>Die Erstellung des Projekts "C:\Users\s0542834\Desktop\cg-beleg-ss15\SolarShoot\SolarShoot\SolarShoot.vcxproj" ist abgeschlossen, build Ziel(e).
 
 Das Erstellen war erfolgreich.
 
-Verstrichene Zeit 00:00:02.36
+Verstrichene Zeit 00:00:01.57

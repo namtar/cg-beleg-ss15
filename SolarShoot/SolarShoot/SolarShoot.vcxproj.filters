@@ -50,10 +50,10 @@
     <ClInclude Include="objects.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="SpaceObject.h">
+    <ClInclude Include="Sphere.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Sphere.h">
+    <ClInclude Include="SpaceObject.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

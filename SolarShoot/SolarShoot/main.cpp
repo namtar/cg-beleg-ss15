@@ -1,6 +1,8 @@
 #include <iostream>
 #include <stdlib.h>
 #include <stdio.h>
+#include <map>
+#include <string>
 
 using namespace std;
 
@@ -11,15 +13,26 @@ using namespace std;
 
 #include "shader.hpp"
 #include "objects.hpp"
+#include "SpaceObject.hpp"
 
 // http://r3dux.org/2011/05/simple-opengl-keyboard-and-mouse-fps-controls/
 // http://r3dux.org/2012/12/a-c-camera-class-for-simple-opengl-fps-controls/
 
 
 // Globals
+
+// http://kengine.sourceforge.net/tutorial/g/stdmap-eng.htm
+typedef std::map<std::string, SpaceObject*> SpaceObjectMap;
+SpaceObjectMap spaceObjectMap;
+
 const float TO_RADS = 3.141592654f / 180.0f; // The value of 1 degree in radians
 
 GLFWwindow* window;
+glm::mat4 Projection;
+glm::mat4 View;
+glm::mat4 Model;
+GLuint programID;
+
 float angle = 0.0;
 int windowWidth = 1024;
 int windowHeight = 768;
@@ -30,6 +43,7 @@ float lightPositionMatrix[] = {-2.0f, 2.0f, -3.0f, 1.0f};
 
 // Location of the sun (i.e. how far deep into the screen is it?)
 GLfloat sunZLocation = -300.0f;
+glm::mat4 LightTransformation;
 
 // Camera rotation
 GLfloat camXRot = 0.0f;
@@ -62,11 +76,24 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 void drawGround();
 void drawScene();
 void calculateCameraMovement();
+void createSpaceObjects(GLuint programID);
 
 void drawTriangles();
 void drawCube(float size);
 
 // top methods
+
+void sendMVP() {
+	// Our ModelViewProjection : multiplication of our 3 matrices
+	glm::mat4 MVP = Projection * View * Model; 
+	// Send our transformation to the currently bound shader, 
+	// in the "MVP" uniform, konstant fuer alle Eckpunkte
+	glUniformMatrix4fv(glGetUniformLocation(programID, "MVP"), 1, GL_FALSE, &MVP[0][0]);
+
+	glUniformMatrix4fv(glGetUniformLocation(programID, "M"), 1, GL_FALSE, &Model[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(programID, "V"), 1, GL_FALSE, &View[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(programID, "P"), 1, GL_FALSE, &Projection[0][0]);
+}
 
 void error_callback(int error, const char* description)
 {
@@ -241,41 +268,47 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 void run()
 {
 	// load shaders
-	GLuint programID = LoadShaders("StandardShading.vertexshader", "StandardShading.fragmentshader");
-	glClearColor(0.0, 0.0, 0.0, 1.0); //background color and alpha
+	programID = LoadShaders("StandardShading.vertexshader", "StandardShading.fragmentshader");
+	glClearColor(0.0, 0.0, 0.8, 1.0); //background color and alpha
+	// Shader auch benutzen !
+	glUseProgram(programID);
 
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(45, windowWidth / windowHeight, 1.0, 500.0);
-	glMatrixMode(GL_MODELVIEW);
+	// glMatrixMode(GL_PROJECTION);
+	// glLoadIdentity();
+	// gluPerspective(45, windowWidth / windowHeight, 1.0, 500.0);
+	Projection = glm::perspective(45.0f, (float) windowWidth / (float) windowHeight, 1.0f, 500.0f);
+	// glMatrixMode(GL_MODELVIEW);
 	glEnable(GL_CULL_FACE); // Do not draw polygons facing away from us
 	glEnable(GL_DEPTH_TEST);
+	glDepthFunc( GL_LESS );
 	glClearDepth(1.0f); // Clear the entire depth of the depth buffer
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
+	// glEnable(GL_LIGHTING);
+	// glEnable(GL_LIGHT0);
 
-	float diffuseMatrix[] = {1.0f, 0.5f, 0.0f, 1.0f}; // 3 colors and alpha. In this a lamp with white color
-	float ambienceMatrix[] = {0.2f, 0.2f, 0.2f, 1.0f};
-	float specularLight[] = {1.0f, 1.0f, 1.0f, 1.0f};
-	GLint specularMagnitude = 64; // Define how "tight" our specular highlights are (larger number = smaller specular highlight). The valid range is is 1 to 128 
+	// float diffuseMatrix[] = {1.0f, 0.5f, 0.0f, 1.0f}; // 3 colors and alpha. In this a lamp with white color
+	// float ambienceMatrix[] = {0.2f, 0.2f, 0.2f, 1.0f};
+	// float specularLight[] = {1.0f, 1.0f, 1.0f, 1.0f};
+	// GLint specularMagnitude = 64; // Define how "tight" our specular highlights are (larger number = smaller specular highlight). The valid range is is 1 to 128 
 
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseMatrix);
-	glLightfv(GL_LIGHT0, GL_AMBIENT, ambienceMatrix);
-	glLightfv(GL_LIGHT0, GL_SPECULAR, specularLight); // reflection light from objects
+	// glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseMatrix);
+	// glLightfv(GL_LIGHT0, GL_AMBIENT, ambienceMatrix);
+	// glLightfv(GL_LIGHT0, GL_SPECULAR, specularLight); // reflection light from objects
 
 	// Enable colour tracking of materials
-	glEnable(GL_COLOR_MATERIAL);
+	// glEnable(GL_COLOR_MATERIAL);
 
 	// Define the shininess of the material we'll use to draw things
-	GLfloat materialSpecularReflectance[] = {1.0f, 1.0f, 1.0f, 1.0f};
+	// GLfloat materialSpecularReflectance[] = {1.0f, 1.0f, 1.0f, 1.0f};
 
 	// Set Material properties to follow glColor values
-	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+	// glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
 
 	// Use our shiny material and magnitude
-	glMaterialfv(GL_FRONT, GL_SPECULAR, materialSpecularReflectance);
-	glMateriali(GL_FRONT, GL_SHININESS, specularMagnitude);
+	// glMaterialfv(GL_FRONT, GL_SPECULAR, materialSpecularReflectance);
+	// glMateriali(GL_FRONT, GL_SHININESS, specularMagnitude);
 
+	// create space objects
+	createSpaceObjects(programID);
 
 	// fps stuff, not the best variance. Better would be to do this in a spearate thread.
 	double starttime = glfwGetTime();
@@ -307,6 +340,10 @@ void run()
 //			intervalStart = glfwGetTime();
 //			frameCount = 0;
 //		}
+		View = glm::lookAt(glm::vec3(-camXPos, -camYPos, -camZPos), // Camera is at (0,0,-5), in World Space
+						   glm::vec3(0,0,0),  // and looks at the origin
+						   glm::vec3(0,1,0)); // Head is up (set to 0,-1,0 to look upside-down)
+		
 
 		drawScene();
 		calculateCameraMovement();
@@ -348,40 +385,52 @@ void drawGround()
 void drawScene()
 {
 	// clear screen and set lightposition
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glLoadIdentity();
+	// glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	// glLoadIdentity();
 //	glLightfv(GL_LIGHT0, GL_POSITION, lightPositionMatrix); // the position must be set right after the loading of the identity matrix			
 
 	// Move the camera to our location in space
-	glRotatef(camXRot, 1.0f, 0.0f, 0.0f); // Rotate our camera on the x-axis (looking up and down)
-	glRotatef(camYRot, 0.0f, 1.0f, 0.0f); // Rotate our camera on the  y-axis (looking left and right)
-	glTranslatef(-camXPos, -camYPos, -camZPos); // Translate the modelviewm matrix to the position of our camera
+	View = glm::mat4(1.0f);
+	View = glm::rotate(View, camXRot, glm::vec3(1.0f, 0.0f, 0.0f));
+	View = glm::rotate(View, camYRot, glm::vec3(0.0f, 1.0f, 0.0f));
+	View = glm::translate(View, glm::vec3(-camXPos, -camYPos, -camZPos));
+	sendMVP();
+	// glRotatef(camXRot, 1.0f, 0.0f, 0.0f); // Rotate our camera on the x-axis (looking up and down)
+	// glRotatef(camYRot, 0.0f, 1.0f, 0.0f); // Rotate our camera on the  y-axis (looking left and right)
+	// glTranslatef(-camXPos, -camYPos, -camZPos); // Translate the modelviewm matrix to the position of our camera
+
 //	lightPositionMatrix[0] = (-camXPos);
 //	lightPositionMatrix[1] = (-camYPos);
 //	lightPositionMatrix[2] = (-camZPos);
 //	glLightfv(GL_LIGHT0, GL_POSITION, lightPositionMatrix); // the position must be set right after the loading of the identity matrix
 
-	drawGround();
+	// drawGround();
 //	glPushMatrix();
 //
 //	glPopMatrix(); 
 	// draw sun and set light to this location
 	    // Move everything "into" the screen (i.e. move 300 units along the Z-axis into the screen) so that all positions are now relative to the location of the sun
-    glTranslatef(0.0f, 0.0f, sunZLocation);
+	Model = glm::mat4(1.0f);
+	Model = glm::translate(Model, glm::vec3(0.0f, 0.0f, sunZLocation));		
+	glm::vec4 lightPos = LightTransformation * glm::vec4(0, 0, 0, 1);
+//	glUniform3f(glGetUniformLocation(programID, "LightPosition_worldspace"), lightPos.x, lightPos.y, lightPos.z);
+	glUniform3f(glGetUniformLocation(programID, "LightPosition_worldspace"), 0.0f, 0.0f, sunZLocation);
+    glUniform3f(glGetUniformLocation(programID, "LightColor"), 1, 1, 0); // yellow light
  
     // Draw the sun (disable lighting so it's always drawn as bright as possible regardless of any lighting going on)
-    glColor3ub(255, 255, 0);
-    glDisable(GL_LIGHTING);
-	glScalef(10.0f, 10.0f, 10.0f);
+    // glColor3ub(255, 255, 0);
+    // glDisable(GL_LIGHTING);
+	Model = glm::scale(Model, glm::vec3(10.0f, 10.0f, 10.0f));
+	sendMVP();
     drawSphere(35.0f, 35.0f);
-	glScalef(1.0f, 1.0f, 1.0f);
-    glEnable(GL_LIGHTING);
+// 	glScalef(1.0f, 1.0f, 1.0f);
+//   glEnable(GL_LIGHTING);
  
     // Define our light position
     // *** IMPORTANT! *** A light position takes a FOUR component vector! The last component is w! If you leave off the last component, you get NO LIGHT!!!
-    GLfloat newLightPos[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+    // GLfloat newLightPos[] = { 0.0f, 0.0f, 0.0f, 1.0f };
  
-    glLightfv(GL_LIGHT0, GL_POSITION, newLightPos);  // Place the light where the sun is!
+    // glLightfv(GL_LIGHT0, GL_POSITION, newLightPos);  // Place the light where the sun is!
 
 	/* Render here */
 	render();
@@ -390,15 +439,17 @@ void drawScene()
 
 void render()
 {
-	glTranslatef(-5.0, 1.0, -25.0);
-	glRotatef(angle, 1.0, 1.0, 1.0); // angle, x-axis, y-axis, z-axis
-	drawCube(2.0);
-	angle += 0.5;
-	angle = fmod(angle, 360.0f);	
+	spaceObjectMap.find("ship1")->second->draw(View, Projection);
 
-	glTranslatef(0.8, 0.8, -10.0);
-	glScalef(1.0, 1.0, 1.0);
-	drawSphere(1, 1);
+	//glRotatef(angle, 1.0, 1.0, 1.0); // angle, x-axis, y-axis, z-axis
+	//glTranslatef(-5.0, 1.0, -25.0);
+	//drawCube(2.0);
+	//angle += 0.5;
+	//angle = fmod(angle, 360.0f);	
+
+	//glTranslatef(0.8, 0.8, -10.0);
+	//glScalef(1.0, 1.0, 1.0);
+	//drawSphere(1, 1);
 }
 
 // Function to calculate which direction we need to move the camera and by what amount
@@ -570,4 +621,11 @@ void drawCube(float size)
 	glVertex3f(-size / 2, -size / 2, -size / 2);
 	glVertex3f(size / 2, -size / 2, -size / 2);
 	glEnd();
+}
+
+void createSpaceObjects(GLuint programID)
+{
+	SpaceObject* ship1 = new SpaceObject(programID);
+	ship1->translate(-5.0f, -2.0f, -15.0f);
+	spaceObjectMap.insert(std::pair<string, SpaceObject*>("ship1", ship1));
 }
