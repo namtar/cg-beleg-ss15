@@ -71,12 +71,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\MovementTests\objects.cpp" />
+    <ClCompile Include="..\..\MovementTests\objloader.cpp" />
     <ClCompile Include="..\..\MovementTests\shader.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="SpaceObject.cpp" />
+    <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="objects.hpp" />
+    <ClInclude Include="objloader.hpp" />
     <ClInclude Include="shader.hpp" />
+    <ClInclude Include="SpaceObject.h" />
+    <ClInclude Include="Sphere.h" />
     <ClInclude Include="Wall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
