@@ -14,6 +14,7 @@ SpaceObject::SpaceObject(GLuint programId, char* textureFileName, char* objectFi
 SpaceObject::~SpaceObject(void)
 {
 	// TODO: cleanups
+	// glDeleteBuffers
 }
 
 void SpaceObject::setupBuffers() 
