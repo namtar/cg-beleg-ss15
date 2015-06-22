@@ -1,15 +1,71 @@
 #include "SpaceObject.hpp"
 
 
-SpaceObject::SpaceObject(GLuint programId)
+SpaceObject::SpaceObject(GLuint programId, char* textureFileName, char* objectFileName)
 {
 	this->programId = programId;
 	this->ObjectColor = glm::vec3(0.0f, 0.0f, 0.0f); // default black
+	this->textureFileName = textureFileName;
+	this->objectFileName = objectFileName;
+	setupBuffers();
 }
 
 
 SpaceObject::~SpaceObject(void)
 {
+	// TODO: cleanups
+}
+
+void SpaceObject::setupBuffers() 
+{
+	std::vector<glm::vec3> vertices;
+	std::vector<glm::vec2> uvs;
+	std::vector<glm::vec3> normals; 
+
+	GLuint vertexArray;
+	glGenVertexArrays(1, &vertexArray);
+	glBindVertexArray(vertexArray);
+
+	bool res = loadOBJ(this->objectFileName, vertices, uvs, normals);
+
+	// Ein ArrayBuffer speichert Daten zu Eckpunkten (hier xyz bzw. Position)
+	GLuint vertexbuffer;
+	glGenBuffers(1, &vertexbuffer); // Kennung erhalten
+	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer); // Daten zur Kennung definieren
+	// Buffer zugreifbar für die Shader machen
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
+
+	// Erst nach glEnableVertexAttribArray kann DrawArrays auf die Daten zugreifen...
+	glEnableVertexAttribArray(0); // siehe layout im vertex shader: location = 0 
+	glVertexAttribPointer(0,  // location = 0 
+		                  3,  // Datenformat vec3: 3 floats fuer xyz 
+						  GL_FLOAT, 
+						  GL_FALSE, // Fixedpoint data normalisieren ?
+						  0, // Eckpunkte direkt hintereinander gespeichert
+						  (void*) 0); // abweichender Datenanfang ?
+
+	GLuint normalbuffer; // Hier alles analog für Normalen in location == 2
+	glGenBuffers(1, &normalbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
+	glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(glm::vec3), &normals[0], GL_STATIC_DRAW);
+	glEnableVertexAttribArray(2); // siehe layout im vertex shader 
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+	GLuint uvbuffer; // Hier alles analog für Texturkoordinaten in location == 1 (2 floats u und v!)
+	glGenBuffers(1, &uvbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
+	glBufferData(GL_ARRAY_BUFFER, uvs.size() * sizeof(glm::vec2), &uvs[0], GL_STATIC_DRAW);
+	glEnableVertexAttribArray(1); // siehe layout im vertex shader 
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+	// Load the texture
+	GLuint Texture = loadBMP_custom(this->textureFileName);
+	// Bind our texture in Texture Unit 0
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, Texture);
+
+	// Set our "myTextureSampler" sampler to user Texture Unit 0
+	glUniform1i(glGetUniformLocation(programId, "myTextureSampler"), 0);
 }
 
 void SpaceObject::draw(glm::mat4 ViewMatrix, glm::mat4 ProjectionMatrix) 

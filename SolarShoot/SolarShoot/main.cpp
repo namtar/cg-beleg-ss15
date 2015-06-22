@@ -273,39 +273,12 @@ void run()
 	// Shader auch benutzen !
 	glUseProgram(programID);
 
-	// glMatrixMode(GL_PROJECTION);
-	// glLoadIdentity();
-	// gluPerspective(45, windowWidth / windowHeight, 1.0, 500.0);
 	Projection = glm::perspective(45.0f, (float) windowWidth / (float) windowHeight, 1.0f, 500.0f);
 	// glMatrixMode(GL_MODELVIEW);
 	glEnable(GL_CULL_FACE); // Do not draw polygons facing away from us
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc( GL_LESS );
 	glClearDepth(1.0f); // Clear the entire depth of the depth buffer
-	// glEnable(GL_LIGHTING);
-	// glEnable(GL_LIGHT0);
-
-	// float diffuseMatrix[] = {1.0f, 0.5f, 0.0f, 1.0f}; // 3 colors and alpha. In this a lamp with white color
-	// float ambienceMatrix[] = {0.2f, 0.2f, 0.2f, 1.0f};
-	// float specularLight[] = {1.0f, 1.0f, 1.0f, 1.0f};
-	// GLint specularMagnitude = 64; // Define how "tight" our specular highlights are (larger number = smaller specular highlight). The valid range is is 1 to 128 
-
-	// glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseMatrix);
-	// glLightfv(GL_LIGHT0, GL_AMBIENT, ambienceMatrix);
-	// glLightfv(GL_LIGHT0, GL_SPECULAR, specularLight); // reflection light from objects
-
-	// Enable colour tracking of materials
-	// glEnable(GL_COLOR_MATERIAL);
-
-	// Define the shininess of the material we'll use to draw things
-	// GLfloat materialSpecularReflectance[] = {1.0f, 1.0f, 1.0f, 1.0f};
-
-	// Set Material properties to follow glColor values
-	// glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
-
-	// Use our shiny material and magnitude
-	// glMaterialfv(GL_FRONT, GL_SPECULAR, materialSpecularReflectance);
-	// glMateriali(GL_FRONT, GL_SHININESS, specularMagnitude);
 
 	// create space objects
 	createSpaceObjects(programID);
@@ -384,30 +357,13 @@ void drawGround()
 
 void drawScene()
 {
-	// clear screen and set lightposition
-	// glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	// glLoadIdentity();
-//	glLightfv(GL_LIGHT0, GL_POSITION, lightPositionMatrix); // the position must be set right after the loading of the identity matrix			
-
 	// Move the camera to our location in space
 	View = glm::mat4(1.0f);
 	View = glm::rotate(View, camXRot, glm::vec3(1.0f, 0.0f, 0.0f));
 	View = glm::rotate(View, camYRot, glm::vec3(0.0f, 1.0f, 0.0f));
 	View = glm::translate(View, glm::vec3(-camXPos, -camYPos, -camZPos));
 	sendMVP();
-	// glRotatef(camXRot, 1.0f, 0.0f, 0.0f); // Rotate our camera on the x-axis (looking up and down)
-	// glRotatef(camYRot, 0.0f, 1.0f, 0.0f); // Rotate our camera on the  y-axis (looking left and right)
-	// glTranslatef(-camXPos, -camYPos, -camZPos); // Translate the modelviewm matrix to the position of our camera
 
-//	lightPositionMatrix[0] = (-camXPos);
-//	lightPositionMatrix[1] = (-camYPos);
-//	lightPositionMatrix[2] = (-camZPos);
-//	glLightfv(GL_LIGHT0, GL_POSITION, lightPositionMatrix); // the position must be set right after the loading of the identity matrix
-
-	// drawGround();
-//	glPushMatrix();
-//
-//	glPopMatrix(); 
 	// draw sun and set light to this location
 	    // Move everything "into" the screen (i.e. move 300 units along the Z-axis into the screen) so that all positions are now relative to the location of the sun
 	Model = glm::mat4(1.0f);
@@ -418,20 +374,10 @@ void drawScene()
     glUniform3f(glGetUniformLocation(programID, "LightColor"), 1, 1, 0); // yellow light
 	glUniform3f(glGetUniformLocation(programID, "ObjectColor"), 1, 1, 0); // draw yellow sun
  
-    // Draw the sun (disable lighting so it's always drawn as bright as possible regardless of any lighting going on)
-    // glColor3ub(255, 255, 0);
-    // glDisable(GL_LIGHTING);
+    // Draw the sun
 	Model = glm::scale(Model, glm::vec3(10.0f, 10.0f, 10.0f));
 	sendMVP();
     drawSphere(35.0f, 35.0f);
-// 	glScalef(1.0f, 1.0f, 1.0f);
-//   glEnable(GL_LIGHTING);
- 
-    // Define our light position
-    // *** IMPORTANT! *** A light position takes a FOUR component vector! The last component is w! If you leave off the last component, you get NO LIGHT!!!
-    // GLfloat newLightPos[] = { 0.0f, 0.0f, 0.0f, 1.0f };
- 
-    // glLightfv(GL_LIGHT0, GL_POSITION, newLightPos);  // Place the light where the sun is!
 
 	/* Render here */
 	render();
@@ -442,15 +388,6 @@ void render()
 {
 	spaceObjectMap.find("ship1")->second->draw(View, Projection);
 
-	//glRotatef(angle, 1.0, 1.0, 1.0); // angle, x-axis, y-axis, z-axis
-	//glTranslatef(-5.0, 1.0, -25.0);
-	//drawCube(2.0);
-	//angle += 0.5;
-	//angle = fmod(angle, 360.0f);	
-
-	//glTranslatef(0.8, 0.8, -10.0);
-	//glScalef(1.0, 1.0, 1.0);
-	//drawSphere(1, 1);
 }
 
 // Function to calculate which direction we need to move the camera and by what amount
@@ -548,80 +485,6 @@ void calculateCameraMovement()
 		//cout << "low capping Z speed to: " << movementSpeedFactor << endl;
 		camZSpeed = -movementSpeedFactor;
 	}
-}
-
-void drawTriangles()
-{
-	float ratio;
-	int width, height;
-	glfwGetFramebufferSize(window, &width, &height);
-	ratio = width / (float) height;
-	glViewport(0, 0, width, height);
-	glClear(GL_COLOR_BUFFER_BIT);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	glRotatef((float) glfwGetTime() * 50.f, 0.f, 0.f, 1.f);
-	glBegin(GL_TRIANGLES);
-	glColor3f(1.f, 0.f, 0.f);
-	glVertex3f(-0.6f, -0.4f, 0.f);
-	glColor3f(0.f, 1.f, 0.f);
-	glVertex3f(0.6f, -0.4f, 0.f);
-	glColor3f(0.f, 0.f, 1.f);
-	glVertex3f(0.f, 0.6f, 0.f);
-	glEnd();
-}
-
-void drawCube(float size)
-{
-	float difamb[] = {1.0,0.5,0.3,1.0};
-	glBegin(GL_QUADS);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, difamb);
-	// front face
-	glNormal3f(0.0, 0.0, 1.0);
-	//              glColor3f(1.0,0.0,0.0);
-	glVertex3f(size / 2, size / 2, size / 2);
-	glVertex3f(-size / 2, size / 2, size / 2);
-	glVertex3f(-size / 2, -size / 2, size / 2);
-	glVertex3f(size / 2, -size / 2, size / 2);
-	// left face
-	glNormal3f(-1.0, 0.0, 0.0);
-	//              glColor3f(0.0,1.0,0.0);
-	glVertex3f(-size / 2, size / 2, size / 2);
-	glVertex3f(-size / 2, -size / 2, size / 2);
-	glVertex3f(-size / 2, -size / 2, -size / 2);
-	glVertex3f(-size / 2, size / 2, -size / 2);
-	// back face
-	glNormal3f(0.0, 0.0, -1.0);
-	//              glColor3f(0.0,0.0,1.0);
-	glVertex3f(size / 2, size / 2, -size / 2);
-	glVertex3f(-size / 2, size / 2, -size / 2);
-	glVertex3f(-size / 2, -size / 2, -size / 2);
-	glVertex3f(size / 2, -size / 2, -size / 2);
-	// right face
-	glNormal3f(1.0, 0.0, 0.0);
-	//              glColor3f(1.0,1.0,0.0);
-	glVertex3f(size / 2, size / 2, size / 2);
-	glVertex3f(size / 2, -size / 2, size / 2);
-	glVertex3f(size / 2, -size / 2, -size / 2);
-	glVertex3f(size / 2, size / 2, -size / 2);
-	// top face
-	glNormal3f(0.0, 1.0, 0.0);
-	//              glColor3f(1.0,0.0,1.0);
-	glVertex3f(size / 2, size / 2, size / 2);
-	glVertex3f(-size / 2, size / 2, size / 2);
-	glVertex3f(-size / 2, size / 2, -size / 2);
-	glVertex3f(size / 2, size / 2, -size / 2);
-	// bottom face
-	glNormal3f(0.0, -1.0, 0.0);
-	//              glColor3f(0.0,1.0,1.0);
-	glVertex3f(size / 2, -size / 2, size / 2);
-	glVertex3f(-size / 2, -size / 2, size / 2);
-	glVertex3f(-size / 2, -size / 2, -size / 2);
-	glVertex3f(size / 2, -size / 2, -size / 2);
-	glEnd();
 }
 
 void createSpaceObjects(GLuint programID)

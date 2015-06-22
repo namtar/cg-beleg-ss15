@@ -4,9 +4,12 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <vector>
 
 #include "shader.hpp"
 #include "objects.hpp"
+#include "texture.hpp"
+#include "objloader.hpp"
 
 /*
  * Class for one spaceobject like asteroid oder enemy spaceship.
@@ -19,12 +22,16 @@ private:
 
 	GLuint programId;
 	glm::vec3 ObjectColor;
+	char* textureFileName;
+	char* objectFileName;
+
+	void SpaceObject::setupBuffers();
 
 public:
 
 	glm::mat4 Model;
 
-	SpaceObject(GLuint programId);
+	SpaceObject(GLuint programId, char* textureFileName, char* objectFileName);
 	~SpaceObject(void);
 
 	/**
