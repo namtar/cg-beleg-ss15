@@ -4,6 +4,7 @@
 SpaceObject::SpaceObject(GLuint programId)
 {
 	this->programId = programId;
+	this->ObjectColor = glm::vec3(0.0f, 0.0f, 0.0f); // default black
 }
 
 
@@ -19,6 +20,7 @@ void SpaceObject::draw(glm::mat4 ViewMatrix, glm::mat4 ProjectionMatrix)
 	glUniformMatrix4fv(glGetUniformLocation(programId, "MVP"), 1, GL_FALSE, &MVP[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(programId, "V"), 1, GL_FALSE, &ViewMatrix[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(programId, "M"), 1, GL_FALSE, &Model[0][0]);
+	glUniform3f(glGetUniformLocation(programId, "ObjectColor"), ObjectColor[0], ObjectColor[1], ObjectColor[2]);
 
 	drawCube();
 }

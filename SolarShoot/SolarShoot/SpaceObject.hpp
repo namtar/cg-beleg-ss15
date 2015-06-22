@@ -18,6 +18,7 @@ private:
 	glm::mat4 MVP;
 
 	GLuint programId;
+	glm::vec3 ObjectColor;
 
 public:
 

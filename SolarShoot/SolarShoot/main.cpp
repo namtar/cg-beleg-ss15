@@ -416,6 +416,7 @@ void drawScene()
 //	glUniform3f(glGetUniformLocation(programID, "LightPosition_worldspace"), lightPos.x, lightPos.y, lightPos.z);
 	glUniform3f(glGetUniformLocation(programID, "LightPosition_worldspace"), 0.0f, 0.0f, sunZLocation);
     glUniform3f(glGetUniformLocation(programID, "LightColor"), 1, 1, 0); // yellow light
+	glUniform3f(glGetUniformLocation(programID, "ObjectColor"), 1, 1, 0); // draw yellow sun
  
     // Draw the sun (disable lighting so it's always drawn as bright as possible regardless of any lighting going on)
     // glColor3ub(255, 255, 0);

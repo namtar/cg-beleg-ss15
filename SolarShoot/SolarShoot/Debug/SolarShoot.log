@@ -1,9 +1,12 @@
-﻿Der Buildvorgang wurde am 15.06.2015 17:14:38 gestartet.
+﻿Der Buildvorgang wurde am 22.06.2015 14:47:44 gestartet.
      1>Projekt "C:\Users\s0542834\Desktop\cg-beleg-ss15\SolarShoot\SolarShoot\SolarShoot.vcxproj" auf Knoten "2", build Ziel(e).
      1>InitializeBuildStatus:
          "Debug\SolarShoot.unsuccessfulbuild" wird erstellt, da "AlwaysCreate" angegeben wurde.
        ClCompile:
-         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"externals\glm-0.9.4.0" /I"externals\glew-1.12.0\include" /I"externals\glfw-3.1.1.bin.WIN32\include" /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"externals\glm-0.9.4.0" /I"externals\glew-1.12.0\include" /I"externals\glfw-3.1.1.bin.WIN32\include" /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt SpaceObject.cpp main.cpp
+         SpaceObject.cpp
+         Code wird generiert...
+         Kompilieren...
          main.cpp
      1>c:\users\s0542834\desktop\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(125): warning C4244: 'Initialisierung': Konvertierung von 'double' in 'int', möglicher Datenverlust
      1>c:\users\s0542834\desktop\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(126): warning C4244: 'Initialisierung': Konvertierung von 'double' in 'int', möglicher Datenverlust
@@ -14,9 +17,10 @@
      1>c:\users\s0542834\desktop\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(376): warning C4244: 'Argument': Konvertierung von 'GLint' in 'GLfloat', möglicher Datenverlust
      1>c:\users\s0542834\desktop\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(379): warning C4244: 'Argument': Konvertierung von 'GLint' in 'GLfloat', möglicher Datenverlust
      1>c:\users\s0542834\desktop\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(380): warning C4244: 'Argument': Konvertierung von 'GLint' in 'GLfloat', möglicher Datenverlust
-     1>c:\users\s0542834\desktop\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(425): warning C4244: 'Argument': Konvertierung von 'float' in 'GLuint', möglicher Datenverlust
-     1>c:\users\s0542834\desktop\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(425): warning C4244: 'Argument': Konvertierung von 'float' in 'GLuint', möglicher Datenverlust
-     1>c:\users\s0542834\desktop\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(578): warning C4305: 'Initialisierung': Verkürzung von 'double' in 'float'
+     1>c:\users\s0542834\desktop\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(426): warning C4244: 'Argument': Konvertierung von 'float' in 'GLuint', möglicher Datenverlust
+     1>c:\users\s0542834\desktop\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(426): warning C4244: 'Argument': Konvertierung von 'float' in 'GLuint', möglicher Datenverlust
+     1>c:\users\s0542834\desktop\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(579): warning C4305: 'Initialisierung': Verkürzung von 'double' in 'float'
+         Code wird generiert...
        Link:
          c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\s0542834\Desktop\cg-beleg-ss15\SolarShoot\Debug\SolarShoot.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"externals\glfw-3.1.1.bin.WIN32\lib-vc2010" /LIBPATH:"externals\glew-1.12.0\lib\Release\Win32" kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib OpenGL32.lib Glu32.lib glfw3.lib glew32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\SolarShoot.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\s0542834\Desktop\cg-beleg-ss15\SolarShoot\Debug\SolarShoot.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\s0542834\Desktop\cg-beleg-ss15\SolarShoot\Debug\SolarShoot.lib" /MACHINE:X86 Debug\objects.obj
          Debug\objloader.obj
@@ -37,4 +41,4 @@
 
 Das Erstellen war erfolgreich.
 
-Verstrichene Zeit 00:00:01.57
+Verstrichene Zeit 00:00:02.09
