@@ -36,6 +36,9 @@
     <ClCompile Include="Sphere.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="texture.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="shader.hpp">
@@ -54,6 +57,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="SpaceObject.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="texture.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

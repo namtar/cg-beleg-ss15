@@ -22,8 +22,14 @@ private:
 
 	GLuint programId;
 	glm::vec3 ObjectColor;
+
+	// object and texture stuff
 	char* textureFileName;
 	char* objectFileName;
+	GLuint vertexArrayId;
+	std::vector<glm::vec3> vertices;
+	std::vector<glm::vec2> uvs;
+	std::vector<glm::vec3> normals; 
 
 	void SpaceObject::setupBuffers();
 
@@ -39,7 +45,7 @@ public:
 	 */
 	void SpaceObject::draw(glm::mat4 ViewMatrix, glm::mat4 ProjectionMatrix);
 	void SpaceObject::translate(GLfloat x, GLfloat y, GLfloat z);
-	void SpaceObject::scale();
-	void SpaceObject::rotate();
+	void SpaceObject::scale(GLdouble x, GLdouble y, GLdouble z);
+	void SpaceObject::rotate(GLfloat angle, GLdouble x, GLdouble y, GLdouble z);
 };
 

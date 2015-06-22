@@ -17,14 +17,9 @@ SpaceObject::~SpaceObject(void)
 }
 
 void SpaceObject::setupBuffers() 
-{
-	std::vector<glm::vec3> vertices;
-	std::vector<glm::vec2> uvs;
-	std::vector<glm::vec3> normals; 
-
-	GLuint vertexArray;
-	glGenVertexArrays(1, &vertexArray);
-	glBindVertexArray(vertexArray);
+{		
+	glGenVertexArrays(1, &vertexArrayId);
+	glBindVertexArray(vertexArrayId);
 
 	bool res = loadOBJ(this->objectFileName, vertices, uvs, normals);
 
@@ -78,21 +73,22 @@ void SpaceObject::draw(glm::mat4 ViewMatrix, glm::mat4 ProjectionMatrix)
 	glUniformMatrix4fv(glGetUniformLocation(programId, "M"), 1, GL_FALSE, &Model[0][0]);
 	glUniform3f(glGetUniformLocation(programId, "ObjectColor"), ObjectColor[0], ObjectColor[1], ObjectColor[2]);
 
-	drawCube();
+	// drawCube();
+	glBindVertexArray(vertexArrayId);
+	glDrawArrays(GL_TRIANGLES, 0, vertices.size()); // draws the teapot
 }
 
 void SpaceObject::translate(GLfloat x, GLfloat y, GLfloat z)
 {
-	// glTranslatef(x, y, z);
-
 	Model = glm::translate(Model, glm::vec3(x, y, z));
 }
 
-void SpaceObject::scale()
+void SpaceObject::scale(GLdouble x, GLdouble y, GLdouble z)
 {
-
+	Model = glm::scale(Model, glm::vec3(x, y, z));
 }
 
-void SpaceObject::rotate()
+void SpaceObject::rotate(GLfloat angle, GLdouble x, GLdouble y, GLdouble z)
 {
+	Model = glm::rotate(Model, angle, glm::vec3(x, y, z));
 }

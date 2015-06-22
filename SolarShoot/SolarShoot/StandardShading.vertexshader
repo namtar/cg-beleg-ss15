@@ -17,8 +17,8 @@ uniform mat4 MVP;
 uniform mat4 V;
 uniform mat4 M;
 uniform vec3 LightPosition_worldspace;
-uniform vec3 LightColor = vec3(1,1,1);
-uniform vec3 ObjectColor = vec3(0,0,0);
+// uniform vec3 LightColor = vec3(1,1,1);
+// uniform vec3 ObjectColor = vec3(0,0,0);
 
 void main(){
 

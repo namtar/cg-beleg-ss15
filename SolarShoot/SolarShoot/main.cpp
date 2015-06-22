@@ -489,7 +489,9 @@ void calculateCameraMovement()
 
 void createSpaceObjects(GLuint programID)
 {
-	SpaceObject* ship1 = new SpaceObject(programID);
-	ship1->translate(-5.0f, -2.0f, -15.0f);
+//	SpaceObject* ship1 = new SpaceObject(programID, "material/mandrill.bmp", "material/teapot.obj");
+	SpaceObject* ship1 = new SpaceObject(programID, "material/mandrill.bmp", "material/Ufo2.obj");
+	ship1->translate(-5.0f, -2.0f, sunZLocation + 20);
+	ship1->scale(1.0 / 500.0, 1.0 / 500.0, 1.0 / 500.0);
 	spaceObjectMap.insert(std::pair<string, SpaceObject*>("ship1", ship1));
 }
