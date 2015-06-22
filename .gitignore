@@ -1,2 +1,6 @@
 ipch
 .tlog
+*.tlog
+*.unsuccessfulbuild
+*.log
+**/Debug/*.pdb
