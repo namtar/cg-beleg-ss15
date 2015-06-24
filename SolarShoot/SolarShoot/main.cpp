@@ -371,7 +371,7 @@ void drawScene()
 	glm::vec4 lightPos = LightTransformation * glm::vec4(0, 0, 0, 1);
 //	glUniform3f(glGetUniformLocation(programID, "LightPosition_worldspace"), lightPos.x, lightPos.y, lightPos.z);
 	glUniform3f(glGetUniformLocation(programID, "LightPosition_worldspace"), 0.0f, 0.0f, sunZLocation);
-    glUniform3f(glGetUniformLocation(programID, "LightColor"), 1, 1, 0); // yellow light
+    glUniform3f(glGetUniformLocation(programID, "LightColor"), 1, 1, 1); // yellow light
 	glUniform3f(glGetUniformLocation(programID, "ObjectColor"), 1, 1, 0); // draw yellow sun
  
     // Draw the sun
@@ -491,7 +491,7 @@ void createSpaceObjects(GLuint programID)
 {
 //	SpaceObject* ship1 = new SpaceObject(programID, "material/mandrill.bmp", "material/teapot.obj");
 	SpaceObject* ship1 = new SpaceObject(programID, "material/mandrill.bmp", "material/Ufo2.obj");
-	ship1->translate(-5.0f, -2.0f, sunZLocation + 20);
+	ship1->translate(-5.0f, -2.0f, sunZLocation + 100);
 	ship1->scale(1.0 / 500.0, 1.0 / 500.0, 1.0 / 500.0);
 	spaceObjectMap.insert(std::pair<string, SpaceObject*>("ship1", ship1));
 }
