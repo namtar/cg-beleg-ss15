@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <map>
+#include <sstream>
 #include <string>
 
 using namespace std;
@@ -14,6 +15,7 @@ using namespace std;
 #include "shader.hpp"
 #include "objects.hpp"
 #include "SpaceObject.hpp"
+#include "Skybox.h"
 
 // http://r3dux.org/2011/05/simple-opengl-keyboard-and-mouse-fps-controls/
 // http://r3dux.org/2012/12/a-c-camera-class-for-simple-opengl-fps-controls/
@@ -32,6 +34,7 @@ glm::mat4 Projection;
 glm::mat4 View;
 glm::mat4 Model;
 GLuint programID;
+CSkybox skybox;
 
 float angle = 0.0;
 int windowWidth = 1024;
@@ -65,9 +68,14 @@ bool holdingForward = false;
 bool holdingBackward = false;
 bool holdingLeftStrafe = false;
 bool holdingRightStrafe = false;
+bool holdingLeftShift = false;
+bool holdingLeftCtrl = false;
+
 
 // How fast we move (higher values mean we move and strafe faster)
 GLfloat movementSpeedFactor = 1.0f;
+GLfloat sprintAddValue = 1.0f; // shall be added to the basic movement factor
+GLfloat stepSubstractValue = 0.8f; // shall be removed from the base movement factor
 
 // Method Stubs
 void run();
@@ -83,9 +91,10 @@ void drawCube(float size);
 
 // top methods
 
-void sendMVP() {
+void sendMVP()
+{
 	// Our ModelViewProjection : multiplication of our 3 matrices
-	glm::mat4 MVP = Projection * View * Model; 
+	glm::mat4 MVP = Projection * View * Model;
 	// Send our transformation to the currently bound shader, 
 	// in the "MVP" uniform, konstant fuer alle Eckpunkte
 	glUniformMatrix4fv(glGetUniformLocation(programID, "MVP"), 1, GL_FALSE, &MVP[0][0]);
@@ -232,6 +241,14 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 			holdingRightStrafe = true;
 			break;
 
+		case GLFW_KEY_LEFT_SHIFT:
+			holdingLeftShift = true;
+			break;
+
+		case GLFW_KEY_LEFT_CONTROL:
+			holdingLeftCtrl = true;
+			break;
+
 		default:
 			// Do nothing...
 			break;
@@ -258,6 +275,14 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 			holdingRightStrafe = false;
 			break;
 
+		case GLFW_KEY_LEFT_SHIFT:
+			holdingLeftShift = false;
+			break;
+
+		case GLFW_KEY_LEFT_CONTROL:
+			holdingLeftCtrl = false;
+			break;
+
 		default:
 			// Do nothing...
 			break;
@@ -277,7 +302,7 @@ void run()
 	// glMatrixMode(GL_MODELVIEW);
 	glEnable(GL_CULL_FACE); // Do not draw polygons facing away from us
 	glEnable(GL_DEPTH_TEST);
-	glDepthFunc( GL_LESS );
+	glDepthFunc(GL_LESS);
 	glClearDepth(1.0f); // Clear the entire depth of the depth buffer
 
 	// create space objects
@@ -286,10 +311,8 @@ void run()
 	// fps stuff, not the best variance. Better would be to do this in a spearate thread.
 	double starttime = glfwGetTime();
 	double endtime = starttime;
-	double intervalStart = starttime;
 
-	double timeInterval = starttime - endtime;
-	int frameCount = 0;
+	skybox.loadSkybox("material\\skyboxes\\jajlands1\\", "jajlands1_ft.jpg", "jajlands1_bk.jpg", "jajlands1_lf.jpg", "jajlands1_rt.jpg", "jajlands1_up.jpg", "jajlands1_dn.jpg");
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
@@ -303,20 +326,11 @@ void run()
 		{
 			endtime = glfwGetTime();
 		}
-		
-//		timeInterval = glfwGetTime() - intervalStart;
-//		frameCount++;
-//		if (timeInterval >= 1.0)
-//		{
-//			int fps = frameCount / (timeInterval / 1000.0f);
-//			printf("FPD: %i\n", fps);
-//			intervalStart = glfwGetTime();
-//			frameCount = 0;
-//		}
+
 		View = glm::lookAt(glm::vec3(-camXPos, -camYPos, -camZPos), // Camera is at (0,0,-5), in World Space
-						   glm::vec3(0,0,0),  // and looks at the origin
-						   glm::vec3(0,1,0)); // Head is up (set to 0,-1,0 to look upside-down)
-		
+		                   glm::vec3(0, 0, 0), // and looks at the origin
+		                   glm::vec3(0, 1, 0)); // Head is up (set to 0,-1,0 to look upside-down)
+
 
 		drawScene();
 		calculateCameraMovement();
@@ -363,31 +377,35 @@ void drawScene()
 	View = glm::rotate(View, camYRot, glm::vec3(0.0f, 1.0f, 0.0f));
 	View = glm::translate(View, glm::vec3(-camXPos, -camYPos, -camZPos));
 	sendMVP();
+	skybox.renderSkybox();
 
 	// draw sun and set light to this location
-	    // Move everything "into" the screen (i.e. move 300 units along the Z-axis into the screen) so that all positions are now relative to the location of the sun
+	// Move everything "into" the screen (i.e. move 300 units along the Z-axis into the screen) so that all positions are now relative to the location of the sun
 	Model = glm::mat4(1.0f);
-	Model = glm::translate(Model, glm::vec3(0.0f, 0.0f, sunZLocation));		
+	Model = glm::translate(Model, glm::vec3(0.0f, 0.0f, sunZLocation));
 	glm::vec4 lightPos = LightTransformation * glm::vec4(0, 0, 0, 1);
-//	glUniform3f(glGetUniformLocation(programID, "LightPosition_worldspace"), lightPos.x, lightPos.y, lightPos.z);
+	//	glUniform3f(glGetUniformLocation(programID, "LightPosition_worldspace"), lightPos.x, lightPos.y, lightPos.z);
 	glUniform3f(glGetUniformLocation(programID, "LightPosition_worldspace"), 0.0f, 0.0f, sunZLocation);
-    glUniform3f(glGetUniformLocation(programID, "LightColor"), 1, 1, 1); // yellow light
+	glUniform3f(glGetUniformLocation(programID, "LightColor"), 1, 1, 1); // yellow light
 	glUniform3f(glGetUniformLocation(programID, "ObjectColor"), 1, 1, 0); // draw yellow sun
- 
-    // Draw the sun
+
+	// Draw the sun
 	Model = glm::scale(Model, glm::vec3(10.0f, 10.0f, 10.0f));
 	sendMVP();
-    drawSphere(35.0f, 35.0f);
-
+	drawSphere(35.0f, 35.0f);
+	
 	/* Render here */
 	render();
-	
 }
 
 void render()
 {
-	spaceObjectMap.find("ship1")->second->draw(View, Projection);
-
+//	spaceObjectMap.find("ship1")->second->draw(View, Projection);
+//	typedef std::map<std::string, SpaceObject*>::iterator it_type;
+	for(auto iterator = spaceObjectMap.begin(); iterator != spaceObjectMap.end(); iterator++)
+	{
+		iterator->second->draw(View, Projection);
+	}
 }
 
 // Function to calculate which direction we need to move the camera and by what amount
@@ -398,32 +416,43 @@ void calculateCameraMovement()
 	float camMovementYComponent = 0.0f;
 	float camMovementZComponent = 0.0f;
 
+	GLfloat calculatedMovementSpeedFactor = movementSpeedFactor;
+	if (holdingLeftShift && !holdingLeftCtrl)
+	{
+		// sprint
+		calculatedMovementSpeedFactor += sprintAddValue;
+	}
+	else if (!holdingLeftShift && holdingLeftCtrl)
+	{
+		calculatedMovementSpeedFactor -= stepSubstractValue;
+	}
+
 	if (holdingForward == true)
 	{
 		// Control X-Axis movement
 		float pitchFactor = cos(toRads(camXRot));
-		camMovementXComponent += (movementSpeedFactor * float(sin(toRads(camYRot)))) * pitchFactor;
+		camMovementXComponent += (calculatedMovementSpeedFactor * float(sin(toRads(camYRot)))) * pitchFactor;
 
 		// Control Y-Axis movement
-		camMovementYComponent += movementSpeedFactor * float(sin(toRads(camXRot))) * -1.0f;
+		camMovementYComponent += calculatedMovementSpeedFactor * float(sin(toRads(camXRot))) * -1.0f;
 
 		// Control Z-Axis movement
 		float yawFactor = float(cos(toRads(camXRot)));
-		camMovementZComponent += (movementSpeedFactor * float(cos(toRads(camYRot))) * -1.0f) * yawFactor;
+		camMovementZComponent += (calculatedMovementSpeedFactor * float(cos(toRads(camYRot))) * -1.0f) * yawFactor;
 	}
 
 	if (holdingBackward == true)
 	{
 		// Control X-Axis movement
 		float pitchFactor = cos(toRads(camXRot));
-		camMovementXComponent += (movementSpeedFactor * float(sin(toRads(camYRot))) * -1.0f) * pitchFactor;
+		camMovementXComponent += (calculatedMovementSpeedFactor * float(sin(toRads(camYRot))) * -1.0f) * pitchFactor;
 
 		// Control Y-Axis movement
-		camMovementYComponent += movementSpeedFactor * float(sin(toRads(camXRot)));
+		camMovementYComponent += calculatedMovementSpeedFactor * float(sin(toRads(camXRot)));
 
 		// Control Z-Axis movement
 		float yawFactor = float(cos(toRads(camXRot)));
-		camMovementZComponent += (movementSpeedFactor * float(cos(toRads(camYRot)))) * yawFactor;
+		camMovementZComponent += (calculatedMovementSpeedFactor * float(cos(toRads(camYRot)))) * yawFactor;
 	}
 
 	if (holdingLeftStrafe == true)
@@ -431,8 +460,8 @@ void calculateCameraMovement()
 		// Calculate our Y-Axis rotation in radians once here because we use it twice
 		float yRotRad = toRads(camYRot);
 
-		camMovementXComponent += -movementSpeedFactor * float(cos(yRotRad));
-		camMovementZComponent += -movementSpeedFactor * float(sin(yRotRad));
+		camMovementXComponent += -calculatedMovementSpeedFactor * float(cos(yRotRad));
+		camMovementZComponent += -calculatedMovementSpeedFactor * float(sin(yRotRad));
 	}
 
 	if (holdingRightStrafe == true)
@@ -440,8 +469,8 @@ void calculateCameraMovement()
 		// Calculate our Y-Axis rotation in radians once here because we use it twice
 		float yRotRad = toRads(camYRot);
 
-		camMovementXComponent += movementSpeedFactor * float(cos(yRotRad));
-		camMovementZComponent += movementSpeedFactor * float(sin(yRotRad));
+		camMovementXComponent += calculatedMovementSpeedFactor * float(cos(yRotRad));
+		camMovementZComponent += calculatedMovementSpeedFactor * float(sin(yRotRad));
 	}
 
 	// After combining our movements for any & all keys pressed, assign them to our camera speed along the given axis
@@ -449,49 +478,69 @@ void calculateCameraMovement()
 	camYSpeed = camMovementYComponent;
 	camZSpeed = camMovementZComponent;
 
-	// Cap the speeds to our movementSpeedFactor (otherwise going forward and strafing at an angle is twice as fast as just going forward!)
+	// Cap the speeds to our calculatedMovementSpeedFactor (otherwise going forward and strafing at an angle is twice as fast as just going forward!)
 	// X Speed cap
-	if (camXSpeed > movementSpeedFactor)
+	if (camXSpeed > calculatedMovementSpeedFactor)
 	{
-		//cout << "high capping X speed to: " << movementSpeedFactor << endl;
-		camXSpeed = movementSpeedFactor;
+		//cout << "high capping X speed to: " << calculatedMovementSpeedFactor << endl;
+		camXSpeed = calculatedMovementSpeedFactor;
 	}
-	if (camXSpeed < -movementSpeedFactor)
+	if (camXSpeed < -calculatedMovementSpeedFactor)
 	{
-		//cout << "low capping X speed to: " << movementSpeedFactor << endl;
-		camXSpeed = -movementSpeedFactor;
+		//cout << "low capping X speed to: " << calculatedMovementSpeedFactor << endl;
+		camXSpeed = -calculatedMovementSpeedFactor;
 	}
 
 	// Y Speed cap
-	if (camYSpeed > movementSpeedFactor)
+	if (camYSpeed > calculatedMovementSpeedFactor)
 	{
-		//cout << "low capping Y speed to: " << movementSpeedFactor << endl;
-		camYSpeed = movementSpeedFactor;
+		//cout << "low capping Y speed to: " << calculatedMovementSpeedFactor << endl;
+		camYSpeed = calculatedMovementSpeedFactor;
 	}
-	if (camYSpeed < -movementSpeedFactor)
+	if (camYSpeed < -calculatedMovementSpeedFactor)
 	{
-		//cout << "high capping Y speed to: " << movementSpeedFactor << endl;
-		camYSpeed = -movementSpeedFactor;
+		//cout << "high capping Y speed to: " << calculatedMovementSpeedFactor << endl;
+		camYSpeed = -calculatedMovementSpeedFactor;
 	}
 
 	// Z Speed cap
-	if (camZSpeed > movementSpeedFactor)
+	if (camZSpeed > calculatedMovementSpeedFactor)
 	{
-		//cout << "high capping Z speed to: " << movementSpeedFactor << endl;
-		camZSpeed = movementSpeedFactor;
+		//cout << "high capping Z speed to: " << calculatedMovementSpeedFactor << endl;
+		camZSpeed = calculatedMovementSpeedFactor;
 	}
-	if (camZSpeed < -movementSpeedFactor)
+	if (camZSpeed < -calculatedMovementSpeedFactor)
 	{
-		//cout << "low capping Z speed to: " << movementSpeedFactor << endl;
-		camZSpeed = -movementSpeedFactor;
+		//cout << "low capping Z speed to: " << calculatedMovementSpeedFactor << endl;
+		camZSpeed = -calculatedMovementSpeedFactor;
 	}
 }
 
 void createSpaceObjects(GLuint programID)
 {
-//	SpaceObject* ship1 = new SpaceObject(programID, "material/mandrill.bmp", "material/teapot.obj");
-	SpaceObject* ship1 = new SpaceObject(programID, "material/mandrill.bmp", "material/Ufo2.obj");
-	ship1->translate(-5.0f, -2.0f, sunZLocation + 100);
-	ship1->scale(1.0 / 500.0, 1.0 / 500.0, 1.0 / 500.0);
-	spaceObjectMap.insert(std::pair<string, SpaceObject*>("ship1", ship1));
+	//	SpaceObject* ship1 = new SpaceObject(programID, "material/mandrill.bmp", "material/teapot.obj");
+	//	SpaceObject* ship1 = new SpaceObject(programID, "material/mandrill.bmp", "material/SpaceShip.obj");
+	//	ship1->translate(-5.0f, -2.0f, sunZLocation + 100);
+	//	ship1->scale(1.0 / 500.0, 1.0 / 500.0, 1.0 / 500.0);
+	//	spaceObjectMap.insert(std::pair<string, SpaceObject*>("ship1", ship1));
+	glm::vec3 positions[5] = {};
+	positions[0] = glm::vec3(-5.0f, -2.0f, sunZLocation + 100);
+	positions[1] = glm::vec3(-15.0f, -2.0f, sunZLocation + 100);
+	positions[2] = glm::vec3(-30.0f, -2.0f, sunZLocation + 100);
+	positions[3] = glm::vec3(-50.0f, -2.0f, sunZLocation + 100);
+	positions[4] = glm::vec3(-80.0f, -2.0f, sunZLocation + 100);
+
+	// create 5 ships
+	for (int i = 0; i < 5; i++)
+	{
+		glm::vec3 locationVec = positions[i];
+
+		SpaceObject* ship = new SpaceObject(programID, "material/mandrill.bmp", "material/teapot.obj");
+		ship->translate(locationVec[0], locationVec[1], locationVec[2]);
+		ship->scale(1.0 / 500.0, 1.0 / 500.0, 1.0 / 500.0);
+		
+		std::stringstream ss;
+		ss << "ship" << (i+1);
+		spaceObjectMap.insert(std::pair<string, SpaceObject*>(ss.str(), ship));
+	}
 }

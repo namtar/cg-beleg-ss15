@@ -39,6 +39,18 @@
     <ClCompile Include="texture.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Skybox.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyboxSich.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="skyboxTexture.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="skyboxVertextBufferObject.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="shader.hpp">
@@ -60,6 +72,21 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="texture.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Skybox.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyboxSich.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="commonHeader.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="skyboxTexture.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="skyboxVertexBufferObject.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
