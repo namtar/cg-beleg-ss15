@@ -1,7 +1,9 @@
 #pragma once
 
-#include "skyboxTexture.h"
+// #include "skyboxTexture.h"
+#include "commonHeader.h"
 #include "skyboxVertexBufferObject.h"
+#include "texture.hpp"
 
 /********************************
 
@@ -22,7 +24,15 @@ public:
 private:
 	UINT uiVAO;
 	CVertexBufferObject vboRenderData;
-	CTexture tTextures[6];
-	string sDirectory;
-	string sFront, sBack, sLeft, sRight, sTop, sBottom;
+	// CTexture tTextures[6];
+	// string sDirectory;
+	// string sFront, sBack, sLeft, sRight, sTop, sBottom;
+
+	GLuint front;
+	GLuint back;
+	GLuint right;
+	GLuint left;
+	GLuint top;
+	GLuint bottom;
+
 };

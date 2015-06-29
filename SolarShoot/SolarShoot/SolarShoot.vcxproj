@@ -76,7 +76,6 @@
     <ClCompile Include="..\..\MovementTests\shader.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Skybox.cpp" />
-    <ClCompile Include="SkyboxSich.cpp" />
     <ClCompile Include="skyboxTexture.cpp" />
     <ClCompile Include="skyboxVertextBufferObject.cpp" />
     <ClCompile Include="SpaceObject.cpp" />
@@ -90,7 +89,6 @@
     <ClInclude Include="objloader.hpp" />
     <ClInclude Include="shader.hpp" />
     <ClInclude Include="Skybox.h" />
-    <ClInclude Include="SkyboxSich.h" />
     <ClInclude Include="skyboxTexture.h" />
     <ClInclude Include="skyboxVertexBufferObject.h" />
     <ClInclude Include="SpaceObject.hpp" />

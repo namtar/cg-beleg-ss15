@@ -1,30 +1,19 @@
-﻿Der Buildvorgang wurde am 27.06.2015 17:21:00 gestartet.
-     1>Projekt "D:\projects\cg-beleg-ss15\SolarShoot\SolarShoot\SolarShoot.vcxproj" auf Knoten "2", build Ziel(e).
+﻿Der Buildvorgang wurde am 29.06.2015 17:19:55 gestartet.
+     1>Projekt "C:\Users\s0542834\Desktop\cg-beleg-ss15\SolarShoot\SolarShoot\SolarShoot.vcxproj" auf Knoten "2", build Ziel(e).
      1>InitializeBuildStatus:
-         "Debug\SolarShoot.unsuccessfulbuild" wird erstellt, da "AlwaysCreate" angegeben wurde.
+         Aktualisieren des Timestamps von "Debug\SolarShoot.unsuccessfulbuild".
        ClCompile:
-         D:\Programme\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"externals\glm-0.9.4.0" /Iexternals\FreeImage /I"externals\glew-1.12.0\include" /I"externals\glfw-3.1.1.bin.WIN32\include" /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"externals\glm-0.9.4.0" /Iexternals\FreeImage /I"externals\glew-1.12.0\include" /I"externals\glfw-3.1.1.bin.WIN32\include" /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt SpaceObject.cpp main.cpp
+         SpaceObject.cpp
+         Code wird generiert...
+         Überspringen... (keine relevanten Änderungen gefunden)
          main.cpp
-     1>c:\program files (x86)\microsoft sdks\windows\v7.0a\include\windef.h(126): warning C4005: 'APIENTRY': Makro-Neudefinition
-                 d:\projects\cg-beleg-ss15\solarshoot\solarshoot\externals\glfw-3.1.1.bin.win32\include\glfw\glfw3.h(85): Siehe vorherige Definition von 'APIENTRY'
-     1>d:\projects\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(134): warning C4244: 'Initialisierung': Konvertierung von 'double' in 'int', möglicher Datenverlust
-     1>d:\projects\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(135): warning C4244: 'Initialisierung': Konvertierung von 'double' in 'int', möglicher Datenverlust
-     1>d:\projects\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(297): warning C4305: 'Argument': Verkürzung von 'double' in 'GLclampf'
-     1>d:\projects\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(359): warning C4244: 'Initialisierung': Konvertierung von 'GLfloat' in 'GLint', möglicher Datenverlust
-     1>d:\projects\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(359): warning C4244: '+=': Konvertierung von 'GLfloat' in 'GLint', möglicher Datenverlust
-     1>d:\projects\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(362): warning C4244: 'Argument': Konvertierung von 'GLint' in 'GLfloat', möglicher Datenverlust
-     1>d:\projects\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(363): warning C4244: 'Argument': Konvertierung von 'GLint' in 'GLfloat', möglicher Datenverlust
-     1>d:\projects\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(366): warning C4244: 'Argument': Konvertierung von 'GLint' in 'GLfloat', möglicher Datenverlust
-     1>d:\projects\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(367): warning C4244: 'Argument': Konvertierung von 'GLint' in 'GLfloat', möglicher Datenverlust
-     1>d:\projects\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(395): warning C4244: 'Argument': Konvertierung von 'float' in 'GLuint', möglicher Datenverlust
-     1>d:\projects\cg-beleg-ss15\solarshoot\solarshoot\main.cpp(395): warning C4244: 'Argument': Konvertierung von 'float' in 'GLuint', möglicher Datenverlust
        Link:
-         D:\Programme\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\projects\cg-beleg-ss15\SolarShoot\Debug\SolarShoot.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:externals\FreeImage /LIBPATH:"externals\glfw-3.1.1.bin.WIN32\lib-vc2010" /LIBPATH:"externals\glew-1.12.0\lib\Release\Win32" kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib OpenGL32.lib Glu32.lib glfw3.lib glew32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\SolarShoot.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"D:\projects\cg-beleg-ss15\SolarShoot\Debug\SolarShoot.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\projects\cg-beleg-ss15\SolarShoot\Debug\SolarShoot.lib" /MACHINE:X86 Debug\objects.obj
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\s0542834\Desktop\cg-beleg-ss15\SolarShoot\Debug\SolarShoot.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:externals\FreeImage /LIBPATH:"externals\glfw-3.1.1.bin.WIN32\lib-vc2010" /LIBPATH:"externals\glew-1.12.0\lib\Release\Win32" kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib OpenGL32.lib Glu32.lib glfw3.lib glew32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\SolarShoot.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\s0542834\Desktop\cg-beleg-ss15\SolarShoot\Debug\SolarShoot.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\s0542834\Desktop\cg-beleg-ss15\SolarShoot\Debug\SolarShoot.lib" /MACHINE:X86 Debug\objects.obj
          Debug\objloader.obj
          Debug\shader.obj
          Debug\main.obj
          Debug\Skybox.obj
-         Debug\SkyboxSich.obj
          Debug\skyboxTexture.obj
          Debug\skyboxVertextBufferObject.obj
          Debug\SpaceObject.obj
@@ -33,14 +22,14 @@
          Debug\Wall.obj
      1>objects.obj : warning LNK4075: /EDITANDCONTINUE wird aufgrund der Angabe von /INCREMENTAL:NO ignoriert.
      1>LINK : warning LNK4098: Standardbibliothek "MSVCRT" steht in Konflikt mit anderen Bibliotheken; /NODEFAULTLIB:Bibliothek verwenden.
-         SolarShoot.vcxproj -> D:\projects\cg-beleg-ss15\SolarShoot\Debug\SolarShoot.exe
+         SolarShoot.vcxproj -> C:\Users\s0542834\Desktop\cg-beleg-ss15\SolarShoot\Debug\SolarShoot.exe
        Manifest:
-         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"D:\projects\cg-beleg-ss15\SolarShoot\Debug\SolarShoot.exe;#1" /manifest Debug\SolarShoot.exe.intermediate.manifest
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"C:\Users\s0542834\Desktop\cg-beleg-ss15\SolarShoot\Debug\SolarShoot.exe;#1" /manifest Debug\SolarShoot.exe.intermediate.manifest
        FinalizeBuildStatus:
          Die Datei "Debug\SolarShoot.unsuccessfulbuild" wird gelöscht.
          Aktualisieren des Timestamps von "Debug\SolarShoot.lastbuildstate".
-     1>Die Erstellung des Projekts "D:\projects\cg-beleg-ss15\SolarShoot\SolarShoot\SolarShoot.vcxproj" ist abgeschlossen, build Ziel(e).
+     1>Die Erstellung des Projekts "C:\Users\s0542834\Desktop\cg-beleg-ss15\SolarShoot\SolarShoot\SolarShoot.vcxproj" ist abgeschlossen, build Ziel(e).
 
 Das Erstellen war erfolgreich.
 
-Verstrichene Zeit 00:00:04.92
+Verstrichene Zeit 00:00:01.20

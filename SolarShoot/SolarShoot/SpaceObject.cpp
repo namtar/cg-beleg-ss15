@@ -55,13 +55,13 @@ void SpaceObject::setupBuffers()
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 	// Load the texture
-	GLuint Texture = loadBMP_custom(this->textureFileName);
+	Texture = loadBMP_custom(this->textureFileName);
 	// Bind our texture in Texture Unit 0
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, Texture);
+	glBindTexture(GL_TEXTURE_2D, Texture);	
 
 	// Set our "myTextureSampler" sampler to user Texture Unit 0
-	glUniform1i(glGetUniformLocation(programId, "myTextureSampler"), 0);
+	// glUniform1i(glGetUniformLocation(programId, "myTextureSampler"), 0);
 }
 
 void SpaceObject::draw(glm::mat4 ViewMatrix, glm::mat4 ProjectionMatrix) 
@@ -72,9 +72,9 @@ void SpaceObject::draw(glm::mat4 ViewMatrix, glm::mat4 ProjectionMatrix)
 	glUniformMatrix4fv(glGetUniformLocation(programId, "MVP"), 1, GL_FALSE, &MVP[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(programId, "V"), 1, GL_FALSE, &ViewMatrix[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(programId, "M"), 1, GL_FALSE, &Model[0][0]);
-	glUniform3f(glGetUniformLocation(programId, "ObjectColor"), ObjectColor[0], ObjectColor[1], ObjectColor[2]);
+	glUniform3f(glGetUniformLocation(programId, "ObjectColor"), ObjectColor[0], ObjectColor[1], ObjectColor[2]);	
 
-	// drawCube();
+	glBindTexture(GL_TEXTURE_2D, Texture);
 	glBindVertexArray(vertexArrayId);
 	glDrawArrays(GL_TRIANGLES, 0, vertices.size()); // draws the teapot
 }

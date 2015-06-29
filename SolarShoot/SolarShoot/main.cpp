@@ -20,7 +20,6 @@ using namespace std;
 // http://r3dux.org/2011/05/simple-opengl-keyboard-and-mouse-fps-controls/
 // http://r3dux.org/2012/12/a-c-camera-class-for-simple-opengl-fps-controls/
 
-
 // Globals
 
 // http://kengine.sourceforge.net/tutorial/g/stdmap-eng.htm
@@ -298,7 +297,7 @@ void run()
 	// Shader auch benutzen !
 	glUseProgram(programID);
 
-	Projection = glm::perspective(45.0f, (float) windowWidth / (float) windowHeight, 1.0f, 500.0f);
+	Projection = glm::perspective(45.0f, (float) windowWidth / (float) windowHeight, 1.0f, 50000.0f);
 	// glMatrixMode(GL_MODELVIEW);
 	glEnable(GL_CULL_FACE); // Do not draw polygons facing away from us
 	glEnable(GL_DEPTH_TEST);
@@ -312,7 +311,7 @@ void run()
 	double starttime = glfwGetTime();
 	double endtime = starttime;
 
-	skybox.loadSkybox("material\\skyboxes\\jajlands1\\", "jajlands1_ft.jpg", "jajlands1_bk.jpg", "jajlands1_lf.jpg", "jajlands1_rt.jpg", "jajlands1_up.jpg", "jajlands1_dn.jpg");
+	skybox.loadSkybox("material\\skyboxes\\jajlands2\\", "jajlands1_ft.bmp", "jajlands1_bk.bmp", "jajlands1_lf.bmp", "jajlands1_rt.bmp", "jajlands1_up.bmp", "jajlands1_dn.bmp");
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
@@ -370,7 +369,7 @@ void drawGround()
 }
 
 void drawScene()
-{
+{	
 	// Move the camera to our location in space
 	View = glm::mat4(1.0f);
 	View = glm::rotate(View, camXRot, glm::vec3(1.0f, 0.0f, 0.0f));
@@ -400,6 +399,7 @@ void drawScene()
 
 void render()
 {
+
 //	spaceObjectMap.find("ship1")->second->draw(View, Projection);
 //	typedef std::map<std::string, SpaceObject*>::iterator it_type;
 	for(auto iterator = spaceObjectMap.begin(); iterator != spaceObjectMap.end(); iterator++)
@@ -543,4 +543,5 @@ void createSpaceObjects(GLuint programID)
 		ss << "ship" << (i+1);
 		spaceObjectMap.insert(std::pair<string, SpaceObject*>(ss.str(), ship));
 	}
+	
 }

@@ -13,8 +13,16 @@ Result:	Loads skybox and creates VAO and VBO for it.
 /*---------------------------------------------*/
 
 void CSkybox::loadSkybox(string a_sDirectory, string a_sFront, string a_sBack, string a_sLeft, string a_sRight, string a_sTop, string a_sBottom)
-{
-	tTextures[0].loadTexture2D(a_sDirectory+a_sFront);
+{	
+
+	front = loadBMP_custom((a_sDirectory + a_sFront).c_str());
+	back = loadBMP_custom((a_sDirectory + a_sBack).c_str());
+	left = loadBMP_custom((a_sDirectory + a_sLeft).c_str());
+	right = loadBMP_custom((a_sDirectory + a_sRight).c_str());
+	top = loadBMP_custom((a_sDirectory + a_sTop).c_str());
+	bottom = loadBMP_custom((a_sDirectory + a_sBottom).c_str());
+
+	/*tTextures[0].loadTexture2D(a_sDirectory+a_sFront);
 	tTextures[1].loadTexture2D(a_sDirectory+a_sBack);
 	tTextures[2].loadTexture2D(a_sDirectory+a_sLeft);
 	tTextures[3].loadTexture2D(a_sDirectory+a_sRight);
@@ -35,7 +43,10 @@ void CSkybox::loadSkybox(string a_sDirectory, string a_sFront, string a_sBack, s
 		tTextures[i].setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_BILINEAR);
 		tTextures[i].setSamplerParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		tTextures[i].setSamplerParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	}
+	}*/
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
 	glGenVertexArrays(1, &uiVAO);
 	glBindVertexArray(uiVAO);
@@ -44,43 +55,19 @@ void CSkybox::loadSkybox(string a_sDirectory, string a_sFront, string a_sBack, s
 	vboRenderData.bindVBO();
 
 	glm::vec3 vSkyBoxVertices[24] = 
-	{
-//		// Front face
-//		glm::vec3(50.0f, 50.0f, 50.0f), glm::vec3(50.0f, -50.0f, 50.0f), glm::vec3(-50.0f, 50.0f, 50.0f), glm::vec3(-50.0f, -50.0f, 50.0f),
-//		// Back face
-//		glm::vec3(-50.0f, 50.0f, -50.0f), glm::vec3(-50.0f, -50.0f, -50.0f), glm::vec3(50.0f, 50.0f, -50.0f), glm::vec3(50.0f, -50.0f, -50.0f),
-//		// Left face
-//		glm::vec3(-50.0f, 50.0f, 50.0f), glm::vec3(-50.0f, -50.0f, 50.0f), glm::vec3(-50.0f, 50.0f, -50.0f), glm::vec3(-50.0f, -50.0f, -50.0f),
-//		// Right face
-//		glm::vec3(50.0f, 50.0f, -50.0f), glm::vec3(50.0f, -50.0f, -50.0f), glm::vec3(50.0f, 50.0f, 50.0f), glm::vec3(50.0f, -50.0f, 50.0f),
-//		// Top face
-//		glm::vec3(-50.0f, 50.0f, -50.0f), glm::vec3(50.0f, 50.0f, -50.0f), glm::vec3(-50.0f, 50.0f, 50.0f), glm::vec3(50.0f, 50.0f, 50.0f),
-//		// Bottom face
-//		glm::vec3(50.0f, -50.0f, -50.0f), glm::vec3(-50.0f, -50.0f, -50.0f), glm::vec3(50.0f, -50.0f, 50.0f), glm::vec3(-50.0f, -50.0f, 50.0f),
-//		// Front face
-//		glm::vec3(20.0f, 20.0f, 20.0f), glm::vec3(20.0f, -20.0f, 20.0f), glm::vec3(-20.0f, 20.0f, 20.0f), glm::vec3(-20.0f, -20.0f, 20.0f),
-//		// Back face
-//		glm::vec3(-20.0f, 20.0f, -20.0f), glm::vec3(-20.0f, -20.0f, -20.0f), glm::vec3(20.0f, 20.0f, -20.0f), glm::vec3(20.0f, -20.0f, -20.0f),
-//		// Left face
-//		glm::vec3(-20.0f, 20.0f, 20.0f), glm::vec3(-20.0f, -20.0f, 20.0f), glm::vec3(-20.0f, 20.0f, -20.0f), glm::vec3(-20.0f, -20.0f, -20.0f),
-//		// Right face
-//		glm::vec3(20.0f, 20.0f, -20.0f), glm::vec3(20.0f, -20.0f, -20.0f), glm::vec3(20.0f, 20.0f, 20.0f), glm::vec3(20.0f, -20.0f, 20.0f),
-//		// Top face
-//		glm::vec3(-20.0f, 20.0f, -20.0f), glm::vec3(20.0f, 20.0f, -20.0f), glm::vec3(-20.0f, 20.0f, 20.0f), glm::vec3(20.0f, 20.0f, 20.0f),
-//		// Bottom face
-//		glm::vec3(20.0f, -20.0f, -20.0f), glm::vec3(-20.0f, -20.0f, -20.0f), glm::vec3(20.0f, -20.0f, 20.0f), glm::vec3(-20.0f, -20.0f, 20.0f),
+	{		
 		// Front face
-		glm::vec3(5.0f, 5.0f, 5.0f), glm::vec3(5.0f, -5.0f, 5.0f), glm::vec3(-5.0f, 5.0f, 5.0f), glm::vec3(-5.0f, -5.0f, 5.0f),
+		glm::vec3(500.0f, 500.0f, 500.0f), glm::vec3(500.0f, -500.0f, 500.0f), glm::vec3(-500.0f, 500.0f, 500.0f), glm::vec3(-500.0f, -500.0f, 500.0f),
 		// Back face
-		glm::vec3(-5.0f, 5.0f, -5.0f), glm::vec3(-5.0f, -5.0f, -5.0f), glm::vec3(5.0f, 5.0f, -5.0f), glm::vec3(5.0f, -5.0f, -5.0f),
+		glm::vec3(-500.0f, 500.0f, -500.0f), glm::vec3(-500.0f, -500.0f, -500.0f), glm::vec3(500.0f, 500.0f, -500.0f), glm::vec3(500.0f, -500.0f, -500.0f),
 		// Left face
-		glm::vec3(-5.0f, 5.0f, 5.0f), glm::vec3(-5.0f, -5.0f, 5.0f), glm::vec3(-5.0f, 5.0f, -5.0f), glm::vec3(-5.0f, -5.0f, -5.0f),
+		glm::vec3(-500.0f, 500.0f, 500.0f), glm::vec3(-500.0f, -500.0f, 500.0f), glm::vec3(-500.0f, 500.0f, -500.0f), glm::vec3(-500.0f, -500.0f, -500.0f),
 		// Right face
-		glm::vec3(5.0f, 5.0f, -5.0f), glm::vec3(5.0f, -5.0f, -5.0f), glm::vec3(5.0f, 5.0f, 5.0f), glm::vec3(5.0f, -5.0f, 5.0f),
+		glm::vec3(500.0f, 500.0f, -500.0f), glm::vec3(500.0f, -500.0f, -500.0f), glm::vec3(500.0f, 500.0f, 500.0f), glm::vec3(500.0f, -500.0f, 500.0f),
 		// Top face
-		glm::vec3(-5.0f, 5.0f, -5.0f), glm::vec3(5.0f, 5.0f, -5.0f), glm::vec3(-5.0f, 5.0f, 5.0f), glm::vec3(5.0f, 5.0f, 5.0f),
+		glm::vec3(-500.0f, 500.0f, -500.0f), glm::vec3(500.0f, 500.0f, -500.0f), glm::vec3(-500.0f, 500.0f, 500.0f), glm::vec3(500.0f, 500.0f, 500.0f),
 		// Bottom face
-		glm::vec3(5.0f, -5.0f, -5.0f), glm::vec3(-5.0f, -5.0f, -5.0f), glm::vec3(5.0f, -5.0f, 5.0f), glm::vec3(-5.0f, -5.0f, 5.0f),
+		glm::vec3(500.0f, -500.0f, -500.0f), glm::vec3(-500.0f, -500.0f, -500.0f), glm::vec3(500.0f, -500.0f, 500.0f), glm::vec3(-500.0f, -500.0f, 500.0f),
 	};
 	glm::vec2 vSkyBoxTexCoords[4] =
 	{
@@ -131,11 +118,30 @@ void CSkybox::renderSkybox()
 {
 	glDepthMask(0);
 	glBindVertexArray(uiVAO);
-	FOR(i, 6)
-	{
-		tTextures[i].bindTexture();
-		glDrawArrays(GL_TRIANGLE_STRIP, i*4, 4);
-	}
+	// FOR(i, 6)
+	//{
+//		tTextures[i].bindTexture();
+		//glDrawArrays(GL_TRIANGLE_STRIP, i*4, 4);
+	// }
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, front);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0*4, 4);
+	
+	glBindTexture(GL_TEXTURE_2D, back);
+	glDrawArrays(GL_TRIANGLE_STRIP, 1*4, 4);
+
+	glBindTexture(GL_TEXTURE_2D, left);
+	glDrawArrays(GL_TRIANGLE_STRIP, 2*4, 4);
+
+	glBindTexture(GL_TEXTURE_2D, right);
+	glDrawArrays(GL_TRIANGLE_STRIP, 3*4, 4);
+
+	glBindTexture(GL_TEXTURE_2D, top);
+	glDrawArrays(GL_TRIANGLE_STRIP, 4*4, 4);
+
+	glBindTexture(GL_TEXTURE_2D, bottom);
+	glDrawArrays(GL_TRIANGLE_STRIP, 5*4, 4);
+
 	glDepthMask(1);
 }
 
@@ -151,7 +157,7 @@ Result:	Loads skybox and creates VAO and VBO for it.
 
 void CSkybox::releaseSkybox()
 {
-	FOR(i, 6)tTextures[i].releaseTexture();
+	// FOR(i, 6)tTextures[i].releaseTexture();
 	glDeleteVertexArrays(1, &uiVAO);
 	vboRenderData.releaseVBO();
 }
