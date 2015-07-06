@@ -309,7 +309,7 @@ void run()
 	double starttime = glfwGetTime();
 	double endtime = starttime;
 
-	skybox.loadSkybox("material\\skyboxes\\jajlands2\\", "jajlands1_ft.bmp", "jajlands1_bk.bmp", "jajlands1_lf.bmp", "jajlands1_rt.bmp", "jajlands1_up.bmp", "jajlands1_dn.bmp");
+	skybox.loadSkybox("material\\skyboxes\\jajlands2\\", "sky_front.bmp", "sky_back.bmp", "sky_right.bmp", "sky_left.bmp", "sky_top.bmp", "sky_bottom.bmp");
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
@@ -513,9 +513,9 @@ void createSpaceObjects(GLuint programID)
 	{
 		glm::vec3 locationVec = positions[i];
 
-		SpaceObject* ship = new SpaceObject(programID, "material/mandrill.bmp", "material/teapot.obj");
+		SpaceObject* ship = new SpaceObject(programID, "material/astroid.bmp", "material/Asteroid.obj");
 		ship->translate(locationVec[0], locationVec[1], locationVec[2]);
-		ship->scale(1.0 / 500.0, 1.0 / 500.0, 1.0 / 500.0);
+		ship->scale(1.0 / 1.0, 1.0 / 1.0, 1.0 / 1.0);
 		
 		std::stringstream ss;
 		ss << "ship" << (i+1);
