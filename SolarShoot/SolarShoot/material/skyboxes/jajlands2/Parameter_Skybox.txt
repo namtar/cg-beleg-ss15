@@ -1,0 +1,1 @@
+skybox.loadSkybox("material\\skyboxes\\jajlands2\\", "sky_front.bmp", "sky_back.bmp", "sky_right.bmp", "sky_left.bmp", "sky_top.bmp", "sky_bottom.bmp");
