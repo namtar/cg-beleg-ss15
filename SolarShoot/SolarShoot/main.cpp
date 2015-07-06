@@ -378,7 +378,7 @@ void render()
 	for(auto iterator = spaceObjectMap.begin(); iterator != spaceObjectMap.end(); iterator++)
 	{
 		//iterator->second->rotate(angle, 1.0f, 1.0f, 1.0f);
-		iterator->second->translate(-0.5f, 1.0f, -25.0f);		
+	//	iterator->second->translate(-0.5f, 1.0f, -25.0f);		
 
 		iterator->second->draw(View, Projection);
 	}
@@ -515,7 +515,7 @@ void createSpaceObjects(GLuint programID)
 
 		SpaceObject* ship = new SpaceObject(programID, "material/astroid.bmp", "material/Asteroid.obj");
 		ship->translate(locationVec[0], locationVec[1], locationVec[2]);
-		ship->scale(1.0 / 1.0, 1.0 / 1.0, 1.0 / 1.0);
+		// ship->scale(1.0 / 1.0, 1.0 / 1.0, 1.0 / 1.0);
 		
 		std::stringstream ss;
 		ss << "ship" << (i+1);
