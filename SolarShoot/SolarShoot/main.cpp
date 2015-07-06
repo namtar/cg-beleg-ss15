@@ -221,7 +221,6 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 	}
 	if (action == GLFW_PRESS || action == GLFW_REPEAT)
 	{
-		cout << "Key pressed" << endl;
 		switch (key)
 		{
 		case GLFW_KEY_W:
@@ -255,7 +254,6 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 	}
 	else
 	{
-		cout << "Key release" << endl;
 		switch (key)
 		{
 		case GLFW_KEY_W:
@@ -343,31 +341,6 @@ void run()
 	}
 }
 
-// Function to draw a grid of lines
-void drawGround()
-{
-	GLfloat extent = 600.0f; // How far on the Z-Axis and X-Axis the ground extends
-	GLfloat stepSize = 20.0f; // The size of the separation between points
-	GLfloat groundLevel = -50.0f; // Where on the Y-Axis the ground is drawn
-
-	// Set colour to white
-	glColor3ub(255, 255, 255);
-
-	// Draw our ground grid
-	glBegin(GL_LINES);
-	for (GLint loop = -extent; loop < extent; loop += stepSize)
-	{
-		// Draw lines along Z-Axis
-		glVertex3f(loop, groundLevel, extent);
-		glVertex3f(loop, groundLevel, -extent);
-
-		// Draw lines across X-Axis
-		glVertex3f(-extent, groundLevel, loop);
-		glVertex3f(extent, groundLevel, loop);
-	}
-	glEnd();
-}
-
 void drawScene()
 {	
 	// Move the camera to our location in space
@@ -404,8 +377,13 @@ void render()
 //	typedef std::map<std::string, SpaceObject*>::iterator it_type;
 	for(auto iterator = spaceObjectMap.begin(); iterator != spaceObjectMap.end(); iterator++)
 	{
+		//iterator->second->rotate(angle, 1.0f, 1.0f, 1.0f);
+		iterator->second->translate(-0.5f, 1.0f, -25.0f);		
+
 		iterator->second->draw(View, Projection);
 	}
+	/*angle += 0.5f;
+	angle = fmod(angle, 360.0f);*/
 }
 
 // Function to calculate which direction we need to move the camera and by what amount
