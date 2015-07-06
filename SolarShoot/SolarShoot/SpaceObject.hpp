@@ -22,7 +22,9 @@ private:
 	GLuint Texture;
 	GLuint programId;
 	glm::vec3 ObjectColor;
-
+	glm::vec3 objPos;
+	glm::vec3 rotationValues;
+	
 	// object and texture stuff
 	char* textureFileName;
 	char* objectFileName;
@@ -47,5 +49,8 @@ public:
 	void SpaceObject::translate(GLfloat x, GLfloat y, GLfloat z);
 	void SpaceObject::scale(GLdouble x, GLdouble y, GLdouble z);
 	void SpaceObject::rotate(GLfloat angle, GLdouble x, GLdouble y, GLdouble z);
+	glm::vec3 SpaceObject::getObjCoords();
+	void SpaceObject::setRotations(float rotateX, float rotateY, float rotateZ);
+	glm::vec3 SpaceObject::getRotations();
 };
 

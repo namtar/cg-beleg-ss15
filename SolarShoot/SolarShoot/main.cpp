@@ -373,17 +373,23 @@ void drawScene()
 void render()
 {
 
-//	spaceObjectMap.find("ship1")->second->draw(View, Projection);
-//	typedef std::map<std::string, SpaceObject*>::iterator it_type;
 	for(auto iterator = spaceObjectMap.begin(); iterator != spaceObjectMap.end(); iterator++)
 	{
-		//iterator->second->rotate(angle, 1.0f, 1.0f, 1.0f);
-	//	iterator->second->translate(-0.5f, 1.0f, -25.0f);		
+		SpaceObject* obj = iterator->second;
 
-		iterator->second->draw(View, Projection);
-	}
-	/*angle += 0.5f;
-	angle = fmod(angle, 360.0f);*/
+		float offsetX = obj->getObjCoords()[0];
+		float offsetY = obj->getObjCoords()[1];
+		float offsetZ = obj->getObjCoords()[2];
+		float sunZDiff = sunZLocation - offsetZ;
+
+		float sX = -offsetX;
+		float sY = -offsetY;
+		obj->translate(sX, sY, sunZDiff);
+		obj->rotate(1.0f, obj->getRotations()[0], obj->getRotations()[1], obj->getRotations()[2]);		
+
+		obj->translate(offsetX, offsetY, (sunZDiff * (-1)));
+		obj->draw(View, Projection);
+	}	
 }
 
 // Function to calculate which direction we need to move the camera and by what amount
@@ -503,10 +509,10 @@ void createSpaceObjects(GLuint programID)
 	//	spaceObjectMap.insert(std::pair<string, SpaceObject*>("ship1", ship1));
 	glm::vec3 positions[5] = {};
 	positions[0] = glm::vec3(-5.0f, -2.0f, sunZLocation + 100);
-	positions[1] = glm::vec3(-15.0f, -2.0f, sunZLocation + 100);
-	positions[2] = glm::vec3(-30.0f, -2.0f, sunZLocation + 100);
-	positions[3] = glm::vec3(-50.0f, -2.0f, sunZLocation + 100);
-	positions[4] = glm::vec3(-80.0f, -2.0f, sunZLocation + 100);
+	positions[1] = glm::vec3(-15.0f, 19.0f, sunZLocation + 150);
+	positions[2] = glm::vec3(-30.0f, 5.0f, sunZLocation + 200);
+	positions[3] = glm::vec3(50.0f, 2.0f, sunZLocation + 250);
+	positions[4] = glm::vec3(-80.0f, -2.0f, sunZLocation + 275);
 
 	// create 5 ships
 	for (int i = 0; i < 5; i++)
@@ -515,7 +521,15 @@ void createSpaceObjects(GLuint programID)
 
 		SpaceObject* ship = new SpaceObject(programID, "material/astroid.bmp", "material/Asteroid.obj");
 		ship->translate(locationVec[0], locationVec[1], locationVec[2]);
-		// ship->scale(1.0 / 1.0, 1.0 / 1.0, 1.0 / 1.0);
+		// ship->scale(300.0f, 300.0f, 300.0f);
+		
+		if((i % 2) == 0)
+		{
+			ship->setRotations(1.0f, 0.0f, 0.5f);
+		} else
+		{
+			ship->setRotations(0.3f, 1.0f, 0.0f);
+		}
 		
 		std::stringstream ss;
 		ss << "ship" << (i+1);

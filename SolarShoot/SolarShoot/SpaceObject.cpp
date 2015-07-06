@@ -3,10 +3,12 @@
 
 SpaceObject::SpaceObject(GLuint programId, char* textureFileName, char* objectFileName)
 {
+	this->objPos = glm::vec3(0.0f, 0.0f, 0.0f);
 	this->programId = programId;
 	this->ObjectColor = glm::vec3(0.0f, 0.0f, 0.0f); // default black
 	this->textureFileName = textureFileName;
 	this->objectFileName = objectFileName;
+	this->rotationValues = glm::vec3(0.0f, 0.0f, 0.0f);
 	setupBuffers();
 }
 
@@ -81,6 +83,9 @@ void SpaceObject::draw(glm::mat4 ViewMatrix, glm::mat4 ProjectionMatrix)
 
 void SpaceObject::translate(GLfloat x, GLfloat y, GLfloat z)
 {
+	this->objPos[0] += x;
+	this->objPos[1] += y;
+	this->objPos[2] += z;
 	Model = glm::translate(Model, glm::vec3(x, y, z));
 }
 
@@ -92,4 +97,21 @@ void SpaceObject::scale(GLdouble x, GLdouble y, GLdouble z)
 void SpaceObject::rotate(GLfloat angle, GLdouble x, GLdouble y, GLdouble z)
 {
 	Model = glm::rotate(Model, angle, glm::vec3(x, y, z));
+}
+
+glm::vec3 SpaceObject::getObjCoords() 
+{
+	return this->objPos;
+}
+
+void SpaceObject::setRotations(float rotateX, float rotateY, float rotateZ)
+{
+	this->rotationValues[0] = rotateX;
+	this->rotationValues[1] = rotateY;
+	this->rotationValues[2] = rotateZ;
+}
+
+glm::vec3 SpaceObject::getRotations()
+{
+	return this->rotationValues;
 }
