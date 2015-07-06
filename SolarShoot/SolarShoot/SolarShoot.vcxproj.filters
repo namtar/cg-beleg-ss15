@@ -18,16 +18,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\MovementTests\shader.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="Wall.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\MovementTests\objloader.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\MovementTests\objects.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="SpaceObject.cpp">
@@ -46,6 +37,15 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="skyboxVertextBufferObject.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="shader.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="objloader.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="objects.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

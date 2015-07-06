@@ -71,10 +71,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\MovementTests\objects.cpp" />
-    <ClCompile Include="..\..\MovementTests\objloader.cpp" />
-    <ClCompile Include="..\..\MovementTests\shader.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="objects.cpp" />
+    <ClCompile Include="objloader.cpp" />
+    <ClCompile Include="shader.cpp" />
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="skyboxTexture.cpp" />
     <ClCompile Include="skyboxVertextBufferObject.cpp" />

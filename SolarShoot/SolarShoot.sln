@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SolarShoot", "SolarShoot\SolarShoot.vcxproj", "{267CF94E-2197-4D98-B10A-B6CA0C010814}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CGTutorial", "..\MovementTests\CGTutorial.vcxproj", "{19810010-3733-4270-B7CA-5ABCC7901CC0}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -21,14 +19,6 @@ Global
 		{267CF94E-2197-4D98-B10A-B6CA0C010814}.Release|Win32.Build.0 = Release|Win32
 		{267CF94E-2197-4D98-B10A-B6CA0C010814}.RelWithDebInfo|Win32.ActiveCfg = Release|Win32
 		{267CF94E-2197-4D98-B10A-B6CA0C010814}.RelWithDebInfo|Win32.Build.0 = Release|Win32
-		{19810010-3733-4270-B7CA-5ABCC7901CC0}.Debug|Win32.ActiveCfg = Debug|Win32
-		{19810010-3733-4270-B7CA-5ABCC7901CC0}.Debug|Win32.Build.0 = Debug|Win32
-		{19810010-3733-4270-B7CA-5ABCC7901CC0}.MinSizeRel|Win32.ActiveCfg = MinSizeRel|Win32
-		{19810010-3733-4270-B7CA-5ABCC7901CC0}.MinSizeRel|Win32.Build.0 = MinSizeRel|Win32
-		{19810010-3733-4270-B7CA-5ABCC7901CC0}.Release|Win32.ActiveCfg = Release|Win32
-		{19810010-3733-4270-B7CA-5ABCC7901CC0}.Release|Win32.Build.0 = Release|Win32
-		{19810010-3733-4270-B7CA-5ABCC7901CC0}.RelWithDebInfo|Win32.ActiveCfg = RelWithDebInfo|Win32
-		{19810010-3733-4270-B7CA-5ABCC7901CC0}.RelWithDebInfo|Win32.Build.0 = RelWithDebInfo|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
