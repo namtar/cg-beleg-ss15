@@ -22,8 +22,8 @@ private:
 	GLuint Texture;
 	GLuint programId;
 	glm::vec3 ObjectColor;
-	glm::vec3 objPos;
 	glm::vec3 rotationValues;
+	bool mayDraw;
 	
 	// object and texture stuff
 	char* textureFileName;
@@ -45,12 +45,14 @@ public:
 	/**
 	 * Draws the object.
 	 */
-	void SpaceObject::draw(glm::mat4 ViewMatrix, glm::mat4 ProjectionMatrix);
+	void SpaceObject::draw(glm::mat4 ViewMatrix, glm::mat4 ProjectionMatrix, glm::mat4 FakeModelMatrix, bool useFakeModelMatrix);
 	void SpaceObject::translate(GLfloat x, GLfloat y, GLfloat z);
 	void SpaceObject::scale(GLdouble x, GLdouble y, GLdouble z);
-	void SpaceObject::rotate(GLfloat angle, GLdouble x, GLdouble y, GLdouble z);
-	glm::vec3 SpaceObject::getObjCoords();
+	void SpaceObject::rotate(GLfloat angle, GLdouble x, GLdouble y, GLdouble z);	
 	void SpaceObject::setRotations(float rotateX, float rotateY, float rotateZ);
 	glm::vec3 SpaceObject::getRotations();
+	bool SpaceObject::isCollission(float objX, float objY, float objZ);
+	void SpaceObject::setMayDraw(bool draw);
+	bool SpaceObject::isDraw();
 };
 

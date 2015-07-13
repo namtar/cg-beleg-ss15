@@ -3,12 +3,12 @@
 
 SpaceObject::SpaceObject(GLuint programId, char* textureFileName, char* objectFileName)
 {
-	this->objPos = glm::vec3(0.0f, 0.0f, 0.0f);
 	this->programId = programId;
 	this->ObjectColor = glm::vec3(0.0f, 0.0f, 0.0f); // default black
 	this->textureFileName = textureFileName;
 	this->objectFileName = objectFileName;
 	this->rotationValues = glm::vec3(0.0f, 0.0f, 0.0f);
+	this->mayDraw = true;
 	setupBuffers();
 }
 
@@ -36,11 +36,11 @@ void SpaceObject::setupBuffers()
 	// Erst nach glEnableVertexAttribArray kann DrawArrays auf die Daten zugreifen...
 	glEnableVertexAttribArray(0); // siehe layout im vertex shader: location = 0 
 	glVertexAttribPointer(0,  // location = 0 
-		                  3,  // Datenformat vec3: 3 floats fuer xyz 
-						  GL_FLOAT, 
-						  GL_FALSE, // Fixedpoint data normalisieren ?
-						  0, // Eckpunkte direkt hintereinander gespeichert
-						  (void*) 0); // abweichender Datenanfang ?
+		3,  // Datenformat vec3: 3 floats fuer xyz 
+		GL_FLOAT, 
+		GL_FALSE, // Fixedpoint data normalisieren ?
+		0, // Eckpunkte direkt hintereinander gespeichert
+		(void*) 0); // abweichender Datenanfang ?
 
 	GLuint normalbuffer; // Hier alles analog für Normalen in location == 2
 	glGenBuffers(1, &normalbuffer);
@@ -66,14 +66,20 @@ void SpaceObject::setupBuffers()
 	// glUniform1i(glGetUniformLocation(programId, "myTextureSampler"), 0);
 }
 
-void SpaceObject::draw(glm::mat4 ViewMatrix, glm::mat4 ProjectionMatrix) 
+void SpaceObject::draw(glm::mat4 ViewMatrix, glm::mat4 ProjectionMatrix, glm::mat4 FakeModelMatrix, bool useFakeModelMatrix) 
 {
-
-	MVP = ProjectionMatrix * ViewMatrix * Model; 
+	glm::mat4 LocalModel;
+	if(useFakeModelMatrix)
+	{
+		LocalModel = Model * FakeModelMatrix;
+	} else {
+		LocalModel = Model;
+	}
+	MVP = ProjectionMatrix * ViewMatrix * LocalModel; 
 
 	glUniformMatrix4fv(glGetUniformLocation(programId, "MVP"), 1, GL_FALSE, &MVP[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(programId, "V"), 1, GL_FALSE, &ViewMatrix[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(programId, "M"), 1, GL_FALSE, &Model[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(programId, "M"), 1, GL_FALSE, &LocalModel[0][0]);
 	glUniform3f(glGetUniformLocation(programId, "ObjectColor"), ObjectColor[0], ObjectColor[1], ObjectColor[2]);	
 
 	glBindTexture(GL_TEXTURE_2D, Texture);
@@ -82,10 +88,7 @@ void SpaceObject::draw(glm::mat4 ViewMatrix, glm::mat4 ProjectionMatrix)
 }
 
 void SpaceObject::translate(GLfloat x, GLfloat y, GLfloat z)
-{
-	this->objPos[0] += x;
-	this->objPos[1] += y;
-	this->objPos[2] += z;
+{	
 	Model = glm::translate(Model, glm::vec3(x, y, z));
 }
 
@@ -99,11 +102,6 @@ void SpaceObject::rotate(GLfloat angle, GLdouble x, GLdouble y, GLdouble z)
 	Model = glm::rotate(Model, angle, glm::vec3(x, y, z));
 }
 
-glm::vec3 SpaceObject::getObjCoords() 
-{
-	return this->objPos;
-}
-
 void SpaceObject::setRotations(float rotateX, float rotateY, float rotateZ)
 {
 	this->rotationValues[0] = rotateX;
@@ -114,4 +112,36 @@ void SpaceObject::setRotations(float rotateX, float rotateY, float rotateZ)
 glm::vec3 SpaceObject::getRotations()
 {
 	return this->rotationValues;
+}
+
+bool SpaceObject::isCollission(float objX, float objY, float objZ) 
+{
+	// rangeoffset;
+	float rangeOffset = 5.0f;
+
+	float modelX = this->Model[3].x;
+	float modelY = this->Model[3].y;
+	float modelZ = this->Model[3].z;
+
+	if(objX < (modelX + rangeOffset) && objX > (modelX - rangeOffset))
+	{
+		if(objY < (modelY + rangeOffset) && objY > (modelY - rangeOffset))
+		{
+			if(objZ < (modelZ + rangeOffset) && objZ > (modelZ - rangeOffset))
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+void SpaceObject::setMayDraw(bool mayDraw) 
+{
+	this->mayDraw = mayDraw;
+}
+
+bool SpaceObject::isDraw() 
+{
+	return this->mayDraw;
 }

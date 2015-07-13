@@ -18,13 +18,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Wall.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="SpaceObject.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="Sphere.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="texture.cpp">
@@ -53,16 +47,10 @@
     <ClInclude Include="shader.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Wall.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="objloader.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="objects.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Sphere.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="SpaceObject.hpp">

@@ -35,16 +35,20 @@ glm::mat4 Model;
 GLuint programID;
 CSkybox skybox;
 
+glm::mat4 fakeRotator;
+
 float angle = 0.0;
 int windowWidth = 1024;
 int windowHeight = 768;
 int midWindowWidth = windowWidth / 2;
 int midWindowHeight = windowHeight / 2;
 
+float fakeRotation = 0.0f;
+
 float lightPositionMatrix[] = {-2.0f, 2.0f, -3.0f, 1.0f};
 
 // Location of the sun (i.e. how far deep into the screen is it?)
-GLfloat sunZLocation = -300.0f;
+GLfloat sunZLocation = 000.0f;
 glm::mat4 LightTransformation;
 
 // Camera rotation
@@ -55,7 +59,7 @@ GLfloat camZRot = 0.0f;
 // Camera position
 GLfloat camXPos = 0.0f;
 GLfloat camYPos = 0.0f;
-GLfloat camZPos = 0.0f;
+GLfloat camZPos = 50.0f;
 
 // Camera movement speed
 GLfloat camXSpeed = 0.0f;
@@ -99,6 +103,19 @@ void sendMVP()
 	glUniformMatrix4fv(glGetUniformLocation(programID, "MVP"), 1, GL_FALSE, &MVP[0][0]);
 
 	glUniformMatrix4fv(glGetUniformLocation(programID, "M"), 1, GL_FALSE, &Model[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(programID, "V"), 1, GL_FALSE, &View[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(programID, "P"), 1, GL_FALSE, &Projection[0][0]);
+}
+
+void sendMVPCustom(glm::mat4 customModel)
+{
+	// Our ModelViewProjection : multiplication of our 3 matrices
+	glm::mat4 MVP = Projection * View * customModel;
+	// Send our transformation to the currently bound shader, 
+	// in the "MVP" uniform, konstant fuer alle Eckpunkte
+	glUniformMatrix4fv(glGetUniformLocation(programID, "MVP"), 1, GL_FALSE, &MVP[0][0]);
+
+	glUniformMatrix4fv(glGetUniformLocation(programID, "M"), 1, GL_FALSE, &customModel[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(programID, "V"), 1, GL_FALSE, &View[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(programID, "P"), 1, GL_FALSE, &Projection[0][0]);
 }
@@ -164,6 +181,42 @@ void handleMouseMove(GLFWwindow* window, double mouseX, double mouseY)
 	glfwSetCursorPos(window, midWindowWidth, midWindowHeight);
 }
 
+void printInstruction()
+{
+	cout << "Anleitung:" << endl;
+	cout << "#################################" << endl;
+	cout << endl;
+	cout << "Vorwärts: w" << endl;
+	cout << "Rückwärts: s" << endl;
+	cout << "Strafe Rechts: d" << endl;
+	cout << "Strafe Links: a" << endl;
+	cout << "Umschauen mit Maus" << endl;
+	cout << "Schneller fliegen: s" << endl;
+	cout << "Langsamer fliegen: left strg" << endl;
+	cout << endl;
+	cout << "Ziel des Spieles ist es alles herumfliegenden Asteroiden einzusammeln" << endl;
+}
+
+bool checkFinished() 
+{
+	bool finished = true;
+	for(auto iterator = spaceObjectMap.begin(); iterator != spaceObjectMap.end(); iterator++)
+	{
+		SpaceObject* obj = iterator->second;
+		if(obj->isDraw()) 
+		{
+			finished = false;
+			break;
+		}
+	}
+	if(finished) 
+	{
+		cout << "Spiel beendet. Alle Asteroiden wurden eingesammelt" << endl;
+		return true;
+	}
+	return false;
+}
+
 // main
 
 int main(void)
@@ -205,6 +258,13 @@ int main(void)
 
 	// finally run program
 	run();
+
+	// remove key callback
+	glfwSetKeyCallback(window, NULL);	
+	char input;
+
+	cout << "Beliebige Taste zum Beenden" << endl;
+	cin >> input;
 
 	glfwDestroyWindow(window);
 	glfwTerminate();
@@ -289,6 +349,8 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
 void run()
 {
+	printInstruction();
+
 	// load shaders
 	programID = LoadShaders("StandardShading.vertexshader", "StandardShading.fragmentshader");
 	glClearColor(0.0, 0.0, 0.8, 1.0); //background color and alpha
@@ -314,6 +376,11 @@ void run()
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
+		if(checkFinished()) 
+		{
+			break;
+		}
+
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// limit fps to 60
@@ -325,8 +392,8 @@ void run()
 		}
 
 		View = glm::lookAt(glm::vec3(-camXPos, -camYPos, -camZPos), // Camera is at (0,0,-5), in World Space
-		                   glm::vec3(0, 0, 0), // and looks at the origin
-		                   glm::vec3(0, 1, 0)); // Head is up (set to 0,-1,0 to look upside-down)
+			glm::vec3(0, 0, 0), // and looks at the origin
+			glm::vec3(0, 1, 0)); // Head is up (set to 0,-1,0 to look upside-down)
 
 
 		drawScene();
@@ -354,7 +421,8 @@ void drawScene()
 	// draw sun and set light to this location
 	// Move everything "into" the screen (i.e. move 300 units along the Z-axis into the screen) so that all positions are now relative to the location of the sun
 	Model = glm::mat4(1.0f);
-	Model = glm::translate(Model, glm::vec3(0.0f, 0.0f, sunZLocation));
+	Model = glm::translate(Model, glm::vec3(0.0f, 0.0f, sunZLocation));		
+
 	glm::vec4 lightPos = LightTransformation * glm::vec4(0, 0, 0, 1);
 	//	glUniform3f(glGetUniformLocation(programID, "LightPosition_worldspace"), lightPos.x, lightPos.y, lightPos.z);
 	glUniform3f(glGetUniformLocation(programID, "LightPosition_worldspace"), 0.0f, 0.0f, sunZLocation);
@@ -362,24 +430,43 @@ void drawScene()
 	glUniform3f(glGetUniformLocation(programID, "ObjectColor"), 1, 1, 0); // draw yellow sun
 
 	// Draw the sun
-	Model = glm::scale(Model, glm::vec3(10.0f, 10.0f, 10.0f));
+	Model = glm::scale(Model, glm::vec3(10.0f, 10.0f, 10.0f));	
 	sendMVP();
 	drawSphere(35.0f, 35.0f);
-	
+	glUniform3f(glGetUniformLocation(programID, "ObjectColor"), 0, 0, 0); // reset Object Color when sun has been drawn
+
 	/* Render here */
 	render();
 }
 
 void render()
 {
+	
+	fakeRotator = glm::rotate(fakeRotator, fakeRotation, glm::vec3(1.0f, 0.0f, 0.0f));
+	fakeRotation += 1.0f;
+	// fakeRotation = fmod(fakeRotation, 360.0f);
+	sendMVPCustom(fakeRotator);
 
 	for(auto iterator = spaceObjectMap.begin(); iterator != spaceObjectMap.end(); iterator++)
 	{
 		SpaceObject* obj = iterator->second;
+		// check for collission
+		if(obj->isCollission(camXPos, camYPos, camZPos)) 
+		{			
+			obj->setMayDraw(false);
+		}
+		if(!obj->isDraw())
+		{
+			continue;
+		}
 
-		float offsetX = obj->getObjCoords()[0];
-		float offsetY = obj->getObjCoords()[1];
-		float offsetZ = obj->getObjCoords()[2];
+
+		/*float offsetX = obj->getObjCoords()[0];
+		float offsetY = obj->getObjCoords()[1]; */
+		//float offsetZ = obj->getObjCoords()[2];
+		/*float offsetX = obj->Model[3].x;
+		float offsetY = obj->Model[3].y;
+		float offsetZ = obj->Model[3].z;
 		float sunZDiff = sunZLocation - offsetZ;
 
 		float sX = -offsetX;
@@ -388,7 +475,44 @@ void render()
 		obj->rotate(1.0f, obj->getRotations()[0], obj->getRotations()[1], obj->getRotations()[2]);		
 
 		obj->translate(offsetX, offsetY, (sunZDiff * (-1)));
-		obj->draw(View, Projection);
+		obj->draw(View, Projection);*/
+
+	/*	float offsetX = obj->Model[3].x;
+		float offsetY = obj->Model[3].y;
+		float offsetZ = obj->Model[3].z;
+		float sunZDiff;
+
+		float sX = -offsetX;
+		float sY = -offsetY;
+
+		if(offsetZ < 300) 
+		{
+			sunZDiff = sunZLocation - offsetZ;
+			obj->translate(sX, sY, sunZDiff);
+		} 
+		else 
+		{
+			sunZDiff = sunZLocation + offsetZ;
+			obj->translate(sX, sY, -sunZDiff);
+		}		
+
+		obj->rotate(1.0f, obj->getRotations()[0], obj->getRotations()[1], obj->getRotations()[2]);		
+		obj->translate(offsetX, offsetY, (sunZDiff * (-1)));
+		obj->draw(View, Projection, SunLocationMatrix);*/
+
+	/*	float offsetX = obj->Model[3].x;
+		float offsetY = obj->Model[3].y;
+		float offsetZ = obj->Model[3].z;
+
+		float sX = -offsetX;
+		float sY = -offsetY;
+		float sZ = -offsetZ;
+		
+		obj->translate(sX, sY, sZ);
+
+		obj->rotate(1.0f, obj->getRotations()[0], obj->getRotations()[1], obj->getRotations()[2]);		
+		obj->translate(offsetX, offsetY, offsetZ);*/
+		obj->draw(View, Projection, fakeRotator, true);
 	}	
 }
 
@@ -501,18 +625,26 @@ void calculateCameraMovement()
 }
 
 void createSpaceObjects(GLuint programID)
-{
+{		
+	fakeRotator = glm::translate(fakeRotator, glm::vec3(0.0f, 0.0f, 0.0f)); // hide in sun
+
 	//	SpaceObject* ship1 = new SpaceObject(programID, "material/mandrill.bmp", "material/teapot.obj");
 	//	SpaceObject* ship1 = new SpaceObject(programID, "material/mandrill.bmp", "material/SpaceShip.obj");
 	//	ship1->translate(-5.0f, -2.0f, sunZLocation + 100);
 	//	ship1->scale(1.0 / 500.0, 1.0 / 500.0, 1.0 / 500.0);
 	//	spaceObjectMap.insert(std::pair<string, SpaceObject*>("ship1", ship1));
 	glm::vec3 positions[5] = {};
-	positions[0] = glm::vec3(-5.0f, -2.0f, sunZLocation + 100);
+	/*positions[0] = glm::vec3(-5.0f, -2.0f, sunZLocation + 100);
 	positions[1] = glm::vec3(-15.0f, 19.0f, sunZLocation + 150);
 	positions[2] = glm::vec3(-30.0f, 5.0f, sunZLocation + 200);
 	positions[3] = glm::vec3(50.0f, 2.0f, sunZLocation + 250);
-	positions[4] = glm::vec3(-80.0f, -2.0f, sunZLocation + 275);
+	positions[4] = glm::vec3(-80.0f, -2.0f, sunZLocation + 275);*/
+
+	positions[0] = glm::vec3(-5.0f, -2.0f, 100);
+	positions[1] = glm::vec3(-15.0f, 19.0f, 150);
+	positions[2] = glm::vec3(-30.0f, 5.0f, 200);
+	positions[3] = glm::vec3(50.0f, 2.0f, 250);
+	positions[4] = glm::vec3(-80.0f, -2.0f, 275);
 
 	// create 5 ships
 	for (int i = 0; i < 5; i++)
@@ -522,7 +654,7 @@ void createSpaceObjects(GLuint programID)
 		SpaceObject* ship = new SpaceObject(programID, "material/astroid.bmp", "material/Asteroid.obj");
 		ship->translate(locationVec[0], locationVec[1], locationVec[2]);
 		// ship->scale(300.0f, 300.0f, 300.0f);
-		
+
 		if((i % 2) == 0)
 		{
 			ship->setRotations(1.0f, 0.0f, 0.5f);
@@ -530,10 +662,10 @@ void createSpaceObjects(GLuint programID)
 		{
 			ship->setRotations(0.3f, 1.0f, 0.0f);
 		}
-		
+
 		std::stringstream ss;
 		ss << "ship" << (i+1);
 		spaceObjectMap.insert(std::pair<string, SpaceObject*>(ss.str(), ship));
 	}
-	
+
 }

@@ -79,9 +79,7 @@
     <ClCompile Include="skyboxTexture.cpp" />
     <ClCompile Include="skyboxVertextBufferObject.cpp" />
     <ClCompile Include="SpaceObject.cpp" />
-    <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="texture.cpp" />
-    <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="commonHeader.h" />
@@ -92,9 +90,7 @@
     <ClInclude Include="skyboxTexture.h" />
     <ClInclude Include="skyboxVertexBufferObject.h" />
     <ClInclude Include="SpaceObject.hpp" />
-    <ClInclude Include="Sphere.h" />
     <ClInclude Include="texture.hpp" />
-    <ClInclude Include="Wall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
