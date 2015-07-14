@@ -67,11 +67,10 @@ void SpaceObject::setupBuffers()
 }
 
 void SpaceObject::draw(glm::mat4 ViewMatrix, glm::mat4 ProjectionMatrix, glm::mat4 FakeModelMatrix, bool useFakeModelMatrix) 
-{
-	glm::mat4 LocalModel;
+{	
 	if(useFakeModelMatrix)
 	{
-		LocalModel = Model * FakeModelMatrix;
+		LocalModel = FakeModelMatrix * Model;
 	} else {
 		LocalModel = Model;
 	}
@@ -119,9 +118,9 @@ bool SpaceObject::isCollission(float objX, float objY, float objZ)
 	// rangeoffset;
 	float rangeOffset = 5.0f;
 
-	float modelX = this->Model[3].x;
-	float modelY = this->Model[3].y;
-	float modelZ = this->Model[3].z;
+	float modelX = this->LocalModel[3].x;
+	float modelY = this->LocalModel[3].y;
+	float modelZ = this->LocalModel[3].z;
 
 	if(objX < (modelX + rangeOffset) && objX > (modelX - rangeOffset))
 	{

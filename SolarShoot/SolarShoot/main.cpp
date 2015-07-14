@@ -5,6 +5,9 @@
 #include <sstream>
 #include <string>
 
+#include <windows.h>
+#include <mmsystem.h>
+
 using namespace std;
 
 #include <GL/glew.h>
@@ -443,8 +446,8 @@ void render()
 {
 	
 	fakeRotator = glm::rotate(fakeRotator, fakeRotation, glm::vec3(1.0f, 0.0f, 0.0f));
-	fakeRotation += 1.0f;
-	// fakeRotation = fmod(fakeRotation, 360.0f);
+	fakeRotation += 0.0001f;
+	fakeRotation = fmod(fakeRotation, 360.0f);	
 	sendMVPCustom(fakeRotator);
 
 	for(auto iterator = spaceObjectMap.begin(); iterator != spaceObjectMap.end(); iterator++)
@@ -453,65 +456,13 @@ void render()
 		// check for collission
 		if(obj->isCollission(camXPos, camYPos, camZPos)) 
 		{			
+			PlaySound(TEXT("material/sound/WindowsDing.wav"),NULL,SND_ASYNC|SND_FILENAME);
 			obj->setMayDraw(false);
 		}
 		if(!obj->isDraw())
 		{
 			continue;
 		}
-
-
-		/*float offsetX = obj->getObjCoords()[0];
-		float offsetY = obj->getObjCoords()[1]; */
-		//float offsetZ = obj->getObjCoords()[2];
-		/*float offsetX = obj->Model[3].x;
-		float offsetY = obj->Model[3].y;
-		float offsetZ = obj->Model[3].z;
-		float sunZDiff = sunZLocation - offsetZ;
-
-		float sX = -offsetX;
-		float sY = -offsetY;
-		obj->translate(sX, sY, sunZDiff);
-		obj->rotate(1.0f, obj->getRotations()[0], obj->getRotations()[1], obj->getRotations()[2]);		
-
-		obj->translate(offsetX, offsetY, (sunZDiff * (-1)));
-		obj->draw(View, Projection);*/
-
-	/*	float offsetX = obj->Model[3].x;
-		float offsetY = obj->Model[3].y;
-		float offsetZ = obj->Model[3].z;
-		float sunZDiff;
-
-		float sX = -offsetX;
-		float sY = -offsetY;
-
-		if(offsetZ < 300) 
-		{
-			sunZDiff = sunZLocation - offsetZ;
-			obj->translate(sX, sY, sunZDiff);
-		} 
-		else 
-		{
-			sunZDiff = sunZLocation + offsetZ;
-			obj->translate(sX, sY, -sunZDiff);
-		}		
-
-		obj->rotate(1.0f, obj->getRotations()[0], obj->getRotations()[1], obj->getRotations()[2]);		
-		obj->translate(offsetX, offsetY, (sunZDiff * (-1)));
-		obj->draw(View, Projection, SunLocationMatrix);*/
-
-	/*	float offsetX = obj->Model[3].x;
-		float offsetY = obj->Model[3].y;
-		float offsetZ = obj->Model[3].z;
-
-		float sX = -offsetX;
-		float sY = -offsetY;
-		float sZ = -offsetZ;
-		
-		obj->translate(sX, sY, sZ);
-
-		obj->rotate(1.0f, obj->getRotations()[0], obj->getRotations()[1], obj->getRotations()[2]);		
-		obj->translate(offsetX, offsetY, offsetZ);*/
 		obj->draw(View, Projection, fakeRotator, true);
 	}	
 }

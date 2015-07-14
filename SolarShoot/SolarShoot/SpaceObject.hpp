@@ -24,6 +24,7 @@ private:
 	glm::vec3 ObjectColor;
 	glm::vec3 rotationValues;
 	bool mayDraw;
+	glm::mat4 LocalModel;
 	
 	// object and texture stuff
 	char* textureFileName;
