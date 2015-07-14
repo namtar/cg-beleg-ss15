@@ -445,10 +445,12 @@ void drawScene()
 void render()
 {
 	
+	// important to reset the fake rotator matrix. If not the rotation would speed up over time.
+	// one could use this mechanism of a fakeRotator in location 0,0,0 for different rotations of different asteroids.
+	fakeRotator = glm::mat4();
 	fakeRotator = glm::rotate(fakeRotator, fakeRotation, glm::vec3(1.0f, 0.0f, 0.0f));
-	fakeRotation += 0.0001f;
+	fakeRotation += 0.5f;
 	fakeRotation = fmod(fakeRotation, 360.0f);	
-	sendMVPCustom(fakeRotator);
 
 	for(auto iterator = spaceObjectMap.begin(); iterator != spaceObjectMap.end(); iterator++)
 	{
